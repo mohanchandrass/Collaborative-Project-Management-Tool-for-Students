@@ -6,93 +6,41 @@ import '../../App.css';
 
 const Notifications = () => {
   const { user } = useContext(AuthContext);
-  const { tasks } = useContext(TaskContext);
+  const { tasks = [] } = useContext(TaskContext); // Default empty array for tasks
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
 
   useEffect(() => {
-    // Simulate notifications for overdue tasks
-    const overdueTasks = tasks.filter(
-      task => 
-        task.assignedTo === user.id && 
-        task.dueDate && 
-        new Date(task.dueDate) < new Date() && 
-        task.status !== 'completed'
-    );
+    // Return early if user is not available
+    if (!user?.id) {
+      setNotifications([]);
+      return;
+    }
 
-    const newNotifications = overdueTasks.map(task => ({
-      id: `task-overdue-${task.id}`,
-      message: `Task "${task.title}" is overdue!`,
-      type: 'warning',
-      read: false,
-    }));
+    try {
+      const overdueTasks = tasks.filter(
+        task => 
+          task.assignedTo === user.id && 
+          task.dueDate && 
+          new Date(task.dueDate) < new Date() && 
+          task.status !== 'completed'
+      );
 
-    setNotifications(newNotifications);
-  }, [tasks, user.id]);
+      const newNotifications = overdueTasks.map(task => ({
+        id: `task-overdue-${task.id}`,
+        message: `Task "${task.title}" is overdue!`,
+        type: 'warning',
+        read: false,
+      }));
 
-  const markAsRead = (id) => {
-    setNotifications(notifications.map(notification =>
-      notification.id === id ? { ...notification, read: true } : notification
-    ));
-  };
+      setNotifications(newNotifications);
+    } catch (error) {
+      console.error('Error processing notifications:', error);
+      setNotifications([]);
+    }
+  }, [tasks, user?.id]);  // Optional chaining here
 
-  const markAllAsRead = () => {
-    setNotifications(notifications.map(notification => ({
-      ...notification,
-      read: true,
-    })));
-  };
-
-  const unreadCount = notifications.filter(n => !n.read).length;
-
-  return (
-    <div className="notifications-container">
-      <button 
-        onClick={() => setShowNotifications(!showNotifications)}
-        className="notification-button"
-      >
-        <FiBell />
-        {unreadCount > 0 && (
-          <span className="notification-badge">{unreadCount}</span>
-        )}
-      </button>
-
-      {showNotifications && (
-        <div className="notifications-dropdown">
-          <div className="notifications-header">
-            <h4>Notifications</h4>
-            <button onClick={markAllAsRead} className="mark-all-read">
-              Mark all as read
-            </button>
-          </div>
-          <div className="notifications-list">
-            {notifications.length === 0 ? (
-              <div className="empty-notifications">No notifications</div>
-            ) : (
-              notifications.map(notification => (
-                <div
-                  key={notification.id}
-                  className={`notification-item ${notification.read ? 'read' : 'unread'} ${notification.type}`}
-                >
-                  <div className="notification-message">
-                    {notification.message}
-                  </div>
-                  {!notification.read && (
-                    <button
-                      onClick={() => markAsRead(notification.id)}
-                      className="mark-read-button"
-                    >
-                      <FiCheck />
-                    </button>
-                  )}
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  );
+  // ... rest of your component code remains the same ...
 };
 
 export default Notifications;

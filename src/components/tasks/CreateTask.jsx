@@ -1,3 +1,4 @@
+// src/components/Task/CreateTask.jsx
 import React, { useState, useContext } from 'react';
 import { TaskContext } from '../../context/TaskContext';
 import { ProjectContext } from '../../context/ProjectContext';
@@ -33,6 +34,7 @@ const CreateTask = ({ onClose, projectId }) => {
         assignedTo: assignedTo || user.id,
         status: 'todo',
         createdBy: user.id,
+        projectId, // Added to associate task with a project
       });
       onClose();
     } catch (err) {

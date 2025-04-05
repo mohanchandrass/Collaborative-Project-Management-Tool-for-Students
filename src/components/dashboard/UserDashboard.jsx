@@ -1,14 +1,18 @@
 import React, { useContext } from 'react';
 import { ProjectContext } from '../../context/ProjectContext';
-import { TaskContext } from '../../context/TaskContext';  // Import from correct file
+import { TaskContext } from '../../context/TaskContext';
 import { AuthContext } from '../../context/AuthContext';
 import '../../App.css';
 
 const UserDashboard = () => {
-  const { user } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   const { tasks } = useContext(TaskContext);
 
-  const userTasks = tasks.filter(task => task.assignedTo === user.id);
+  if (!tasks || !currentUser) {
+    return <div>Loading dashboard...</div>;
+  }
+
+  const userTasks = tasks.filter(task => task.assignedTo === currentUser.id);
   const completedTasks = userTasks.filter(task => task.status === 'completed').length;
   const overdueTasks = userTasks.filter(task => 
     task.dueDate && new Date(task.dueDate) < new Date() && task.status !== 'completed'

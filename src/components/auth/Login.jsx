@@ -1,58 +1,64 @@
 import React, { useState, useContext } from 'react';
-import { AuthContext } from '../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import '../../App.css';
+import { AuthContext } from "../../context/AuthContext";
+import { Link, useNavigate } from 'react-router-dom';
+import "../../styles/AuthForm.css";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const result = await login(email, password);
-    
-    if (result.success) {
+    setLoading(true);
+    setError('');
+
+    try {
+      await login(email, password);
+      alert('Logged in!');
       navigate('/');
-    } else {
-      setError(result.message || 'Login failed');
+    } catch (err) {
+      console.error("Login Error:", err);
+      setError(err.message || 'Invalid email or password');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="auth-container">
-      <div className="auth-form">
-        <h2>Login</h2>
-        {error && <div className="error-message">{error}</div>}
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit" className="auth-button">
-            Login
-          </button>
-        </form>
-        <p className="auth-link">
-          Don't have an account? <a href="/register">Register</a>
-        </p>
-      </div>
+      <h1 className="app-name">ProjectHub</h1>
+      <h2>Login</h2>
+      <form onSubmit={handleLogin} className="auth-form">
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit" disabled={loading}>
+          {loading ? 'Logging in...' : 'Login'}
+        </button>
+      </form>
+      {error && <p className="error">{error}</p>}
+      <p>
+        Don’t have an account?{' '}
+        <Link to="/register" style={{ color: 'Gray' }}>
+          Register
+        </Link>
+      </p>
     </div>
   );
 };
