@@ -1,9 +1,23 @@
-// src/components/groups/CreateGroupModal.jsx
 import React, { useState } from 'react';
 
 const CreateGroupModal = ({ onClose, onCreate, onJoin }) => {
   const [newGroupName, setNewGroupName] = useState('');
   const [joinCode, setJoinCode] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleCreateGroup = () => {
+    setLoading(true);
+    onCreate(newGroupName);
+    setNewGroupName('');
+    setLoading(false);
+  };
+
+  const handleJoinGroup = () => {
+    setLoading(true);
+    onJoin(joinCode);
+    setJoinCode('');
+    setLoading(false);
+  };
 
   return (
     <div className="modal-overlay">
@@ -16,10 +30,12 @@ const CreateGroupModal = ({ onClose, onCreate, onJoin }) => {
             value={newGroupName}
             onChange={(e) => setNewGroupName(e.target.value)}
           />
-          <button onClick={() => {
-            onCreate(newGroupName);
-            setNewGroupName('');
-          }}>Create</button>
+          <button 
+            onClick={handleCreateGroup}
+            disabled={!newGroupName || loading}  // Disable button if input is empty or loading
+          >
+            {loading ? 'Creating...' : 'Create'}
+          </button>
         </div>
         <div className="modal-section">
           <h4>Join Existing Group</h4>
@@ -28,10 +44,12 @@ const CreateGroupModal = ({ onClose, onCreate, onJoin }) => {
             value={joinCode}
             onChange={(e) => setJoinCode(e.target.value)}
           />
-          <button onClick={() => {
-            onJoin(joinCode);
-            setJoinCode('');
-          }}>Join</button>
+          <button
+            onClick={handleJoinGroup}
+            disabled={!joinCode || loading}  // Disable button if input is empty or loading
+          >
+            {loading ? 'Joining...' : 'Join'}
+          </button>
         </div>
         <button className="close-button" onClick={onClose}>Close</button>
       </div>

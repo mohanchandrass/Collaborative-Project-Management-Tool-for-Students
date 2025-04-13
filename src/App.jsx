@@ -9,6 +9,7 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import UserProfile from './components/UserProfile'; // Import the UserProfile component
 import UserSection from './components/UserSection'; // Import the UserSection component
+import GroupPage from './components/GroupPage'; // Import the GroupPage component
 import './App.css';
 
 class ErrorBoundary extends React.Component {
@@ -87,9 +88,13 @@ function App() {
                     <Route index element={<ProjectDashboard />} />
                     <Route path="projects" element={<ProjectDashboard />} />
                     <Route path="projects/:projectId" element={<ProjectDashboard />} />
-                    {/* Add UserProfile and UserSection routes here */}
-                    <Route path="/userprofile" element={<UserProfile />} />
-                    <Route path="/usersection" element={<UserSection />} />
+
+                    {/* User-specific Routes */}
+                    <Route path="userprofile" element={<UserProfile />} />
+                    <Route path="usersection" element={<UserSection />} />
+
+                    {/* Add the GroupPage route */}
+                    <Route path="group/:groupId" element={<GroupPage />} />
                   </Route>
 
                   {/* Fallback Route */}

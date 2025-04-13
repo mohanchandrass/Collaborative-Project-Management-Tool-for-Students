@@ -139,16 +139,20 @@ const Sidebar = () => {
   const createGroup = useCallback(async () => {
     const currentUser = auth.currentUser;
     if (!newGroupName || !currentUser?.uid) return;
-
+  
     setLoading(true);
     try {
+      const inviteCode = Math.random().toString(36).substring(2, 8).toUpperCase(); // e.g., 'A1B2C3'
+  
       const groupRef = await addDoc(collection(firestore, 'groups'), {
         name: newGroupName.trim(),
         createdBy: currentUser.uid,
         members: [currentUser.uid],
         admin: currentUser.uid,
+        inviteCode, // <-- Include invite code here
         createdAt: new Date(),
       });
+  
       setNewGroupName('');
       setGroupModalOpen(false);
     } catch (error) {
@@ -157,37 +161,44 @@ const Sidebar = () => {
       setLoading(false);
     }
   }, [newGroupName]);
+  
 
   const joinGroup = useCallback(async () => {
     const currentUser = auth.currentUser;
     if (!joinCode || !currentUser) return;
-
+  
     setLoading(true);
     try {
       const groupSnap = await getDocs(
-        query(collection(firestore, 'groups'), where('__name__', '==', joinCode))
+        query(collection(firestore, 'groups'), where('inviteCode', '==', joinCode.trim().toUpperCase()))
       );
-
+  
       if (!groupSnap.empty) {
         const groupDoc = groupSnap.docs[0];
         const groupRef = groupDoc.ref;
         const groupData = groupDoc.data();
-
+  
         if (!groupData.members.includes(currentUser.uid)) {
           await updateDoc(groupRef, {
             members: arrayUnion(currentUser.uid),
           });
         }
+  
+        alert(`Joined group: ${groupData.name}`);
+      } else {
+        alert("Invalid invite code. Please try again.");
       }
+  
       setJoinCode('');
       setGroupModalOpen(false);
     } catch (error) {
       console.error('Error joining group:', error);
+      alert("An error occurred while trying to join the group.");
     } finally {
       setLoading(false);
     }
   }, [joinCode]);
-
+  
   const leaveGroup = useCallback(async (groupId) => {
     const currentUser = auth.currentUser;
     if (!currentUser) return;
