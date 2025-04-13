@@ -10,6 +10,7 @@ import Register from './components/auth/Register';
 import UserProfile from './components/UserProfile'; // Import the UserProfile component
 import UserSection from './components/UserSection'; // Import the UserSection component
 import GroupPage from './components/GroupPage'; // Import the GroupPage component
+import Chat from './components/Chat';
 import './App.css';
 
 class ErrorBoundary extends React.Component {
@@ -94,6 +95,7 @@ function App() {
                     <Route path="usersection" element={<UserSection />} />
 
                     {/* Add the GroupPage route */}
+                    <Route path="/chat" element={<Chat />} />
                     <Route path="group/:groupId" element={<GroupPage />} />
                   </Route>
 

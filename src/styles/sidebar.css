@@ -354,3 +354,31 @@
 .settings-container:hover .settings-popup {
   display: block; /* Show the popup when hovering over the container */
 }
+/* Tooltip bubble for collapsed sidebar */
+.nav-tooltip {
+  position: absolute;
+  transform: translateY(-50%);
+  background-color: #1e1e1e;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  font-size: 13px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  margin-left: 30px;
+  z-index: 999; /* Adjust this value to raise the tooltip */
+}
+
+/* Show tooltip on hover */
+.nav-item:hover .nav-tooltip,
+.group-item:hover .nav-tooltip,
+.avatar-wrapper:hover .nav-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.avatar-wrapper:hover .nav-tooltip {
+  transform: translateY(-250%); /* Move it higher specifically for user profile */
+}

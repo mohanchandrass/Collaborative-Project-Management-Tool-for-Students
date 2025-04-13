@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
-import { FiHome, FiSettings, FiUser, FiChevronLeft, FiChevronRight, FiPlus, FiTrash2, FiEdit, FiLogOut } from 'react-icons/fi';
+import { FiHome, FiMessageSquare,FiSettings, FiUser, FiChevronLeft, FiChevronRight, FiPlus, FiTrash2, FiEdit, FiLogOut } from 'react-icons/fi';
 import { BsPersonFill } from 'react-icons/bs';
 import { NavLink } from 'react-router-dom';
 import { auth, firestore } from '../firebase';
 import { onSnapshot, doc, collection, addDoc, query, where, getDocs, updateDoc, arrayRemove, arrayUnion, getDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import UserProfile from '../components/UserProfile';
+import Chat from '../components/Chat';
 import '../styles/Sidebar.css';
 
 const statusIcons = {
@@ -270,6 +271,20 @@ const Sidebar = () => {
           {expanded ? <FiChevronLeft /> : <FiChevronRight />}
         </button>
       </div>
+      
+      <div className="nav-links">
+  <NavLink 
+    to="/chat"
+    className="nav-item"
+    aria-label="Go to chat"
+  >
+    <FiMessageSquare />
+    {expanded && <span>Chat</span>}
+    {!expanded && <div className="nav-tooltip">Chat</div>}
+  </NavLink>
+</div>
+
+      
 
       <nav className="nav-links">
         <button 
@@ -278,6 +293,7 @@ const Sidebar = () => {
           aria-label="Create or join group"
         >
           <FiPlus /> {expanded && <span>Create/Join Group</span>}
+          {!expanded && <div className="nav-tooltip">Create/Join Group</div>}
         </button>
         
         {groups.map((group) => (
@@ -300,13 +316,16 @@ const Sidebar = () => {
               </div>
             ) : (
               <div className="group-item">
-                <NavLink 
-                  to={`/group/${group.id}`} 
-                  className="nav-item"
-                  aria-label={`Go to ${group.name} group`}
-                >
-                  <FiHome /> {expanded && <span>{group.name}</span>}
-                </NavLink>
+  <NavLink 
+    to={`/group/${group.id}`} 
+    className="nav-item"
+    aria-label={`Go to ${group.name} group`}
+  >
+    <FiHome />
+    {expanded && <span>{group.name}</span>}
+    {!expanded && <div className="nav-tooltip">{group.name}</div>}
+  </NavLink>
+
                 {expanded && (
                   <div className="group-actions">
                     {group.admin === auth.currentUser?.uid && (
@@ -340,19 +359,25 @@ const Sidebar = () => {
         ))}
       </nav>
 
-    <div className="user-section" ref={userMenuRef}>
+      <div className="user-section" ref={userMenuRef}>
   <div
-    className="avatar"
+    className="avatar-wrapper"
     onClick={() => setShowUserMenu(!showUserMenu)}
     role="button"
     aria-label="User menu"
     aria-haspopup="true"
     aria-expanded={showUserMenu}
   >
-    {userInfo.photoURL ? (
-      <img src={userInfo.photoURL} alt="User Avatar" />
-    ) : (
-      <BsPersonFill size={20} />
+    <div className="avatar">
+      {userInfo.photoURL ? (
+        <img src={userInfo.photoURL} alt="User Avatar" />
+      ) : (
+        <BsPersonFill size={20} />
+      )}
+    </div>
+    {/* Tooltip for User Profile */}
+    {!expanded && (
+      <div className="nav-tooltip">User Profile</div>
     )}
   </div>
 
@@ -363,6 +388,8 @@ const Sidebar = () => {
       <div className="status">{statusIcons[userStatus]} {userStatus}</div>
     </div>
   )}
+
+
 
   {showUserMenu && (
     <div className="user-menu-popup">
