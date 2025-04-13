@@ -1,19 +1,19 @@
-import React from 'react'
-import Sidebar from './Sidebar'
-import UserProfile from './UserProfile'
-import MainContent from './MainContent'
-import '../App.css'
+import React, { useState } from 'react';
+import Sidebar from './Sidebar';
+import { Outlet } from 'react-router-dom';
+import '../styles/MainLayout.css'; // make sure this exists
 
 const MainLayout = () => {
-  return (
-    <div className="main-layout">
-      <div className="sidebar-container">
-        <Sidebar />
-        <UserProfile />
-      </div>
-      <MainContent />
-    </div>
-  )
-}
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-export default MainLayout
+  return (
+    <div className="layout-wrapper">
+      <Sidebar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+      <div className={`main-content ${isSidebarOpen ? 'sidebar-open' : 'sidebar-collapsed'}`}>
+        <Outlet />
+      </div>
+    </div>
+  );
+};
+
+export default MainLayout;

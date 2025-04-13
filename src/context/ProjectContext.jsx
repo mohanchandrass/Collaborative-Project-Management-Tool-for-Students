@@ -1,6 +1,10 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { AuthContext } from './AuthContext';
-import { fetchProjects, createProject as apiCreateProject, joinProject as apiJoinProject } from '../services/projects';
+import {
+  fetchProjects,
+  createProject as apiCreateProject,
+  joinProject as apiJoinProject,
+} from '../services/projects';
 
 export const ProjectContext = createContext();
 
@@ -21,6 +25,12 @@ export const ProjectProvider = ({ children }) => {
       setLoading(true);
       const userProjects = await fetchProjects(user.id);
       setProjects(userProjects);
+
+      // ✅ Auto-select the first available project
+      if (userProjects.length > 0) {
+        setCurrentProject(userProjects[0]);
+      }
+
       setLoading(false);
     } catch (error) {
       console.error('Error loading projects:', error);
@@ -31,7 +41,12 @@ export const ProjectProvider = ({ children }) => {
   const createProject = async (name) => {
     try {
       const newProject = await apiCreateProject(user.id, name);
-      setProjects([...projects, newProject]);
+      const updatedProjects = [...projects, newProject];
+      setProjects(updatedProjects);
+
+      // Optionally auto-select the newly created project
+      setCurrentProject(newProject);
+
       return newProject;
     } catch (error) {
       console.error('Error creating project:', error);
@@ -42,7 +57,12 @@ export const ProjectProvider = ({ children }) => {
   const joinProject = async (code) => {
     try {
       const project = await apiJoinProject(user.id, code);
-      setProjects([...projects, project]);
+      const updatedProjects = [...projects, project];
+      setProjects(updatedProjects);
+
+      // Optionally auto-select the joined project
+      setCurrentProject(project);
+
       return project;
     } catch (error) {
       console.error('Error joining project:', error);
@@ -51,7 +71,7 @@ export const ProjectProvider = ({ children }) => {
   };
 
   const selectProject = (projectId) => {
-    const project = projects.find(p => p.id === projectId);
+    const project = projects.find((p) => p.id === projectId);
     setCurrentProject(project);
   };
 

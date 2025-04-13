@@ -13,16 +13,16 @@ const Notifications = () => {
   useEffect(() => {
     // Return early if user is not available
     if (!user?.id) {
-      setNotifications([]);
+      setNotifications([]);  // Reset notifications if no user is present
       return;
     }
 
     try {
       const overdueTasks = tasks.filter(
-        task => 
-          task.assignedTo === user.id && 
-          task.dueDate && 
-          new Date(task.dueDate) < new Date() && 
+        task =>
+          task.assignedTo === user.id &&
+          task.dueDate &&
+          new Date(task.dueDate) < new Date() &&
           task.status !== 'completed'
       );
 
@@ -33,7 +33,14 @@ const Notifications = () => {
         read: false,
       }));
 
-      setNotifications(newNotifications);
+      // Only update notifications if the value has changed to avoid unnecessary renders
+      setNotifications((prevNotifications) => {
+        // Check if the notifications have changed before updating state
+        if (JSON.stringify(prevNotifications) !== JSON.stringify(newNotifications)) {
+          return newNotifications;
+        }
+        return prevNotifications;
+      });
     } catch (error) {
       console.error('Error processing notifications:', error);
       setNotifications([]);

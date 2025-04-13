@@ -1,288 +1,432 @@
-import React, { useContext, useState, useRef, useEffect } from 'react';
-import { ProjectContext } from '../context/ProjectContext';
-import { AuthContext } from '../context/AuthContext';
-import { FiPlus, FiHome, FiLogOut, FiChevronRight, FiChevronLeft } from 'react-icons/fi';
+import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+import { FiHome, FiSettings, FiUser, FiChevronLeft, FiChevronRight, FiPlus, FiTrash2, FiEdit, FiLogOut } from 'react-icons/fi';
 import { BsPersonFill } from 'react-icons/bs';
+import { NavLink } from 'react-router-dom';
+import { auth, firestore } from '../firebase';
+import { onSnapshot, doc, collection, addDoc, query, where, getDocs, updateDoc, arrayRemove, arrayUnion, getDoc } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
+import UserProfile from '../components/UserProfile';
+import '../styles/Sidebar.css';
+
+const statusIcons = {
+  online: '🟢',
+  idle: '🌙',
+  dnd: '🔴',
+  invisible: '⚫',
+};
 
 const Sidebar = () => {
-  const { projects, createProject, activeProject, setActiveProject } = useContext(ProjectContext);
-  const { user, logout } = useContext(AuthContext);
-
-  const [showCreateModal, setShowCreateModal] = useState(false);
-  const [newProjectName, setNewProjectName] = useState('');
+  const [expanded, setExpanded] = useState(true);
+  const [user, setUser] = useState(null);
+  const [userStatus, setUserStatus] = useState('online');
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const [expanded, setExpanded] = useState(false);
+  const [groups, setGroups] = useState([]);
+  const [groupModalOpen, setGroupModalOpen] = useState(false);
+  const [newGroupName, setNewGroupName] = useState('');
+  const [joinCode, setJoinCode] = useState('');
+  const [editGroupId, setEditGroupId] = useState(null);
+  const [editGroupName, setEditGroupName] = useState('');
+  const [hoveringAvatar, setHoveringAvatar] = useState(false);
+  const [showUserProfile, setShowUserProfile] = useState(false);
+  const [loading, setLoading] = useState(false);
   const userMenuRef = useRef(null);
 
+  // Memoized user info
+  const userInfo = useMemo(() => ({
+    name: user?.displayName || user?.username || 'User',
+    email: user?.email,
+    photoURL: user?.photoURL,
+  }), [user]);
+
+  // User data effect
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
-        setShowUserMenu(false);
+    const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
+      if (!currentUser) {
+        setUser(null);
+        setUserStatus('online');
+        return;
       }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+
+      const userDocRef = doc(firestore, 'users', currentUser.uid);
+      const unsubscribeSnapshot = onSnapshot(
+        userDocRef,
+        (docSnap) => {
+          if (docSnap.exists()) {
+            const userData = docSnap.data();
+            setUser(userData);
+            setUserStatus(userData.status || 'online');
+          }
+        },
+        (error) => console.error('Error fetching user data:', error)
+      );
+
+      return unsubscribeSnapshot;
+    });
+
+    return unsubscribeAuth;
   }, []);
 
-  const handleCreateProject = () => {
-    if (newProjectName.trim()) {
-      createProject(newProjectName);
-      setNewProjectName('');
-      setShowCreateModal(false);
+  // Groups data effect
+  useEffect(() => {
+    const currentUser = auth.currentUser;
+    if (!currentUser) return;
+
+    const q = query(
+      collection(firestore, 'groups'),
+      where('members', 'array-contains', currentUser.uid)
+    );
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const groupList = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setGroups(groupList);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  // Click outside handler
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setShowUserMenu(false);
+      }
+    }
+  
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+  
+  const changeStatus = async (status) => {
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      console.error("No user signed in");
+      return;
+    }
+  
+    try {
+      console.log(`Updating status to ${status} for user ${currentUser.uid}`);
+      const userDocRef = doc(firestore, "users", currentUser.uid);
+      
+      // Update ONLY the status field
+      await updateDoc(userDocRef, {
+        status: status
+      });
+      
+      console.log("Status updated successfully");
+      setUserStatus(status);
+    } catch (error) {
+      console.error("Status update failed:", error);
+      
+      if (error.code === 'permission-denied') {
+        alert("You don't have permission to update your status. Please try again.");
+      } else {
+        alert("Error updating status: " + error.message);
+      }
     }
   };
 
-  const sidebarWidth = expanded ? '200px' : '72px';
+  const logout = async () => {
+    try {
+      await auth.signOut();
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
+
+  const createGroup = useCallback(async () => {
+    const currentUser = auth.currentUser;
+    if (!newGroupName || !currentUser?.uid) return;
+
+    setLoading(true);
+    try {
+      const groupRef = await addDoc(collection(firestore, 'groups'), {
+        name: newGroupName.trim(),
+        createdBy: currentUser.uid,
+        members: [currentUser.uid],
+        admin: currentUser.uid,
+        createdAt: new Date(),
+      });
+      setNewGroupName('');
+      setGroupModalOpen(false);
+    } catch (error) {
+      console.error("Failed to create group:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [newGroupName]);
+
+  const joinGroup = useCallback(async () => {
+    const currentUser = auth.currentUser;
+    if (!joinCode || !currentUser) return;
+
+    setLoading(true);
+    try {
+      const groupSnap = await getDocs(
+        query(collection(firestore, 'groups'), where('__name__', '==', joinCode))
+      );
+
+      if (!groupSnap.empty) {
+        const groupDoc = groupSnap.docs[0];
+        const groupRef = groupDoc.ref;
+        const groupData = groupDoc.data();
+
+        if (!groupData.members.includes(currentUser.uid)) {
+          await updateDoc(groupRef, {
+            members: arrayUnion(currentUser.uid),
+          });
+        }
+      }
+      setJoinCode('');
+      setGroupModalOpen(false);
+    } catch (error) {
+      console.error('Error joining group:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [joinCode]);
+
+  const leaveGroup = useCallback(async (groupId) => {
+    const currentUser = auth.currentUser;
+    if (!currentUser) return;
+
+    try {
+      const groupDocRef = doc(firestore, 'groups', groupId);
+      await updateDoc(groupDocRef, {
+        members: arrayRemove(currentUser.uid),
+      });
+    } catch (error) {
+      console.error('Error leaving group:', error);
+    }
+  }, []);
+
+  const removeMember = useCallback(async (groupId, memberId) => {
+    const currentUser = auth.currentUser;
+    if (!currentUser || !memberId) return;
+
+    try {
+      const groupDocRef = doc(firestore, 'groups', groupId);
+      const groupDoc = await getDoc(groupDocRef);
+
+      if (groupDoc.exists() && groupDoc.data().admin === currentUser.uid) {
+        await updateDoc(groupDocRef, {
+          members: arrayRemove(memberId),
+        });
+      }
+    } catch (error) {
+      console.error('Error removing member:', error);
+    }
+  }, []);
+
+  const updateGroupName = useCallback(async (groupId) => {
+    const trimmedName = editGroupName.trim();
+    if (!trimmedName) return;
+
+    try {
+      const groupDocRef = doc(firestore, 'groups', groupId);
+      await updateDoc(groupDocRef, { name: trimmedName });
+      setEditGroupId(null);
+      setEditGroupName('');
+    } catch (error) {
+      console.error('Error updating group name:', error);
+    }
+  }, [editGroupName]);
+
+  const statusOptions = [
+    { id: "online", label: "Online" },
+    { id: "away", label: "Away" },
+    { id: "busy", label: "Busy" },
+    { id: "offline", label: "Offline" }
+  ];
+  
+
+  
 
   return (
-    <>
-      {/* Sidebar */}
-      <div
-        style={{
-          width: sidebarWidth,
-          backgroundColor: '#1e1e1e',
-          height: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          paddingTop: '12px',
-          position: 'fixed',
-          transition: 'width 0.3s ease',
-        }}
-      >
-        {/* Toggle Button */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: expanded ? 'flex-end' : 'center',
-            padding: '10px',
-          }}
+    <div 
+      className={`sidebar ${expanded ? 'expanded' : 'collapsed'}`} 
+      onMouseEnter={() => setHoveringAvatar(true)} 
+      onMouseLeave={() => setHoveringAvatar(false)}
+      aria-expanded={expanded}
+    >
+      <div className="toggle-button">
+        <button 
+          onClick={() => setExpanded(!expanded)}
+          aria-label={expanded ? 'Collapse sidebar' : 'Expand sidebar'}
         >
-          <button
-            onClick={() => setExpanded((prev) => !prev)}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              color: '#ccc',
-              cursor: 'pointer',
-              fontSize: '20px',
-            }}
-          >
-            {expanded ? <FiChevronLeft /> : <FiChevronRight />}
-          </button>
-        </div>
-
-        {/* Home */}
-        <SidebarItem
-          icon={<FiHome />}
-          label="Home"
-          active={activeProject === null}
-          onClick={() => setActiveProject(null)}
-          expanded={expanded}
-        />
-
-        {/* Divider */}
-        <div style={{ width: '80%', height: '1px', backgroundColor: '#363636', margin: '8px auto' }} />
-
-        {/* Projects */}
-        {projects.map((project) => (
-          <SidebarItem
-            key={project.id}
-            icon={project.name.charAt(0).toUpperCase()}
-            label={project.name}
-            active={activeProject === project.id}
-            onClick={() => setActiveProject(project.id)}
-            expanded={expanded}
-          />
-        ))}
-
-        {/* Add Project */}
-        <SidebarItem
-          icon={<FiPlus />}
-          label="New Project"
-          onClick={() => setShowCreateModal(true)}
-          expanded={expanded}
-        />
-
-        <div style={{ marginTop: 'auto', paddingBottom: '12px' }} ref={userMenuRef}>
-          {/* Profile Avatar */}
-          <div
-            onClick={() => setShowUserMenu((prev) => !prev)}
-            style={{
-              width: '48px',
-              height: '48px',
-              margin: '0 auto',
-              borderRadius: '50%',
-              backgroundColor: '#363636',
-              color: 'white',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              cursor: 'pointer',
-              overflow: 'hidden'
-            }}
-          >
-            {user?.photoURL ? (
-              <img src={user.photoURL} alt="User" style={{ width: '100%', height: '100%' }} />
-            ) : (
-              <BsPersonFill size={20} />
-            )}
-          </div>
-
-          {/* Dropdown */}
-          {showUserMenu && (
-            <div
-              style={{
-                position: 'absolute',
-                left: expanded ? '210px' : '80px',
-                bottom: '60px',
-                backgroundColor: '#2a2a2a',
-                borderRadius: '8px',
-                padding: '12px',
-                width: '220px',
-                boxShadow: '0 0 10px rgba(0,0,0,0.5)',
-                zIndex: 100,
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-                <div
-                  style={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '50%',
-                    backgroundColor: '#363636',
-                    color: 'white',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginRight: '10px',
-                    overflow: 'hidden',
-                  }}
-                >
-                  {user?.photoURL ? (
-                    <img src={user.photoURL} alt="User" style={{ width: '100%', height: '100%' }} />
-                  ) : (
-                    <BsPersonFill />
-                  )}
-                </div>
-                <div>
-                  <div style={{ color: 'white', fontWeight: 'bold' }}>{user?.displayName || 'User'}</div>
-                  <div style={{ color: '#aaa', fontSize: '12px' }}>ID: {user?.uid?.slice(0, 8)}</div>
-                </div>
-              </div>
-
-              <div
-                onClick={logout}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  color: 'white',
-                  cursor: 'pointer',
-                  padding: '8px',
-                  borderRadius: '4px',
-                }}
-              >
-                <FiLogOut />
-                <span>Log Out</span>
-              </div>
-            </div>
-          )}
-        </div>
+          {expanded ? <FiChevronLeft /> : <FiChevronRight />}
+        </button>
       </div>
 
-      {/* Modal */}
-      {showCreateModal && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            backgroundColor: 'rgba(0,0,0,0.6)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 1000,
-          }}
+      <nav className="nav-links">
+        <button 
+          className="nav-item" 
+          onClick={() => setGroupModalOpen(true)}
+          aria-label="Create or join group"
         >
-          <div
-            style={{
-              backgroundColor: '#2a2a2a',
-              padding: '20px',
-              borderRadius: '8px',
-              width: '300px',
-            }}
-          >
-            <h3 style={{ color: 'white', marginBottom: '10px' }}>Create Project</h3>
-            <input
-              type="text"
-              value={newProjectName}
-              onChange={(e) => setNewProjectName(e.target.value)}
-              placeholder="Enter project name"
-              style={{
-                width: '100%',
-                padding: '10px',
-                borderRadius: '4px',
-                border: '1px solid #444',
-                marginBottom: '10px',
-                backgroundColor: '#1e1e1e',
-                color: 'white',
-              }}
-            />
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
-              <button
-                onClick={() => setShowCreateModal(false)}
-                style={{
-                  backgroundColor: '#444',
-                  color: 'white',
-                  padding: '8px 12px',
-                  borderRadius: '4px',
-                  border: 'none',
-                  cursor: 'pointer',
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleCreateProject}
-                style={{
-                  backgroundColor: '#3a7bfd',
-                  color: 'white',
-                  padding: '8px 12px',
-                  borderRadius: '4px',
-                  border: 'none',
-                  cursor: 'pointer',
-                }}
-              >
-                Create
+          <FiPlus /> {expanded && <span>Create/Join Group</span>}
+        </button>
+        
+        {groups.map((group) => (
+          <div key={group.id} className="group-container">
+            {editGroupId === group.id ? (
+              <div className="group-edit-form">
+                <input
+                  type="text"
+                  value={editGroupName}
+                  onChange={(e) => setEditGroupName(e.target.value)}
+                  placeholder="New group name"
+                  aria-label="Edit group name"
+                />
+                <button onClick={() => updateGroupName(group.id)} disabled={!editGroupName.trim()}>
+                  Save
+                </button>
+                <button onClick={() => setEditGroupId(null)}>
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <div className="group-item">
+                <NavLink 
+                  to={`/group/${group.id}`} 
+                  className="nav-item"
+                  aria-label={`Go to ${group.name} group`}
+                >
+                  <FiHome /> {expanded && <span>{group.name}</span>}
+                </NavLink>
+                {expanded && (
+                  <div className="group-actions">
+                    {group.admin === auth.currentUser?.uid && (
+                      <>
+                        <button 
+                          onClick={() => {
+                            setEditGroupId(group.id);
+                            setEditGroupName(group.name);
+                          }}
+                          className="action-button"
+                          title="Edit group name"
+                          aria-label="Edit group name"
+                        >
+                          <FiEdit size={14} />
+                        </button>
+                        <button 
+                          onClick={() => leaveGroup(group.id)}
+                          className="action-button"
+                          title="Leave group"
+                          aria-label="Leave group"
+                        >
+                          <FiTrash2 size={14} />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        ))}
+      </nav>
+
+    <div className="user-section" ref={userMenuRef}>
+  <div
+    className="avatar"
+    onClick={() => setShowUserMenu(!showUserMenu)}
+    role="button"
+    aria-label="User menu"
+    aria-haspopup="true"
+    aria-expanded={showUserMenu}
+  >
+    {userInfo.photoURL ? (
+      <img src={userInfo.photoURL} alt="User Avatar" />
+    ) : (
+      <BsPersonFill size={20} />
+    )}
+  </div>
+
+  {expanded && user && (
+    <div className="user-info">
+      <div className="username">{userInfo.name}</div>
+      <div className="email">{userInfo.email}</div>
+      <div className="status">{statusIcons[userStatus]} {userStatus}</div>
+    </div>
+  )}
+
+  {showUserMenu && (
+    <div className="user-menu-popup">
+      <div
+        className="user-menu-option"
+        onClick={() => {
+          setShowUserMenu(false);
+          setShowUserProfile(true);
+        }}
+      >
+        <FiSettings size={16} /> User Settings
+      </div>
+      <div
+        className="user-menu-option"
+        onClick={() => {
+          setShowUserMenu(false);
+          logout();
+        }}
+      >
+        <FiLogOut size={16} /> Logout
+      </div>
+    </div>
+  )}
+</div>
+
+
+
+
+      {groupModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal" role="dialog" aria-modal="true">
+            <h3>Create or Join Group</h3>
+            <div className="modal-section">
+              <h4>Create New Group</h4>
+              <input
+                placeholder="New Group Name"
+                value={newGroupName}
+                onChange={(e) => setNewGroupName(e.target.value)}
+                aria-label="New group name"
+              />
+              <button onClick={createGroup} disabled={!newGroupName.trim() || loading}>
+                {loading ? 'Creating...' : 'Create'}
               </button>
             </div>
+            <div className="modal-section">
+              <h4>Join Existing Group</h4>
+              <input
+                placeholder="Join Code"
+                value={joinCode}
+                onChange={(e) => setJoinCode(e.target.value)}
+                aria-label="Group join code"
+              />
+              <button onClick={joinGroup} disabled={!joinCode.trim() || loading}>
+                {loading ? 'Joining...' : 'Join'}
+              </button>
+            </div>
+            <button 
+              className="close-modal" 
+              onClick={() => setGroupModalOpen(false)}
+              aria-label="Close modal"
+            >
+              Close
+            </button>
           </div>
         </div>
       )}
-    </>
+
+      {showUserProfile && (
+        <UserProfile 
+          show={showUserProfile} 
+          onClose={() => setShowUserProfile(false)}
+        />
+      )}
+    </div>
   );
 };
-
-const SidebarItem = ({ icon, label, active, onClick, expanded }) => (
-  <div
-    onClick={onClick}
-    title={!expanded ? label : ''}
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: expanded ? '12px' : '0',
-      width: '100%',
-      padding: '10px 16px',
-      color: 'white',
-      cursor: 'pointer',
-      backgroundColor: active ? '#363636' : 'transparent',
-      transition: 'background 0.2s ease',
-    }}
-    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#2a2a2a')}
-    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = active ? '#363636' : 'transparent')}
-  >
-    <div style={{ width: '24px', textAlign: 'center' }}>{icon}</div>
-    {expanded && <span>{label}</span>}
-  </div>
-);
 
 export default Sidebar;

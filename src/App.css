@@ -51,31 +51,27 @@ body {
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
 /* App Container */
-.app {
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-}
 
 .app-container {
   display: flex;
   flex: 1;
-  height: 100%;
 }
+
 
 /* Sidebar */
 .sidebar {
-  width: 72px;
+  width: var(--sidebar-width);
   background-color: var(--tertiary-bg);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 12px 0;
-  overflow-y: auto;
-  user-select: none;
+  padding-top: var(--header-height);
+  transition: width 0.3s ease;
 }
 
 /* Server List */
@@ -164,13 +160,13 @@ body {
   opacity: 1;
 }
 
-/* Main Content */
 .main-content {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  background: var(--primary-bg);
-  overflow: hidden;
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  overflow-y: auto;
 }
 
 /* Project Sidebar */
@@ -365,3 +361,111 @@ body {
   border-radius: 50%;
   object-fit: cover;
 }
+
+
+/* Header Styles */
+.header {
+  width: 100%;
+  height: var(--header-height);
+  background-color: var(--primary-light);
+  color: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  border-bottom: 1px solid var(--gray-dark);
+}
+
+.header .logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.header .menu {
+  display: flex;
+  gap: 15px;
+  margin-left: auto;
+}
+
+/* Footer Styles */
+.footer {
+  width: 100%;
+  background-color: var(--primary-light);
+  color: var(--gray-light);
+  padding: 10px;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+button,
+a {
+    background-color: transparent;
+    border: none;
+    color: var(--accent-blue);
+    font-size: 14px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+button:hover,
+a:hover {
+    color: var(--white);
+}
+
+/* Sidebar (Mobile Responsive) */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 80px;
+    }
+
+    .server-list .server-icon {
+        height: 30px;
+        width: 30px;
+        margin: 5px;
+    }
+
+    .main-content {
+        padding: 15px;
+    }
+
+    .project-sidebar {
+        width: 100%;
+    }
+
+    .content-view {
+        gap: 15px;
+    }
+
+    .dashboard-card {
+        padding: 15px;
+    }
+}
+
+/* Mobile View */
+@media (max-width: 480px) {
+    .sidebar {
+        display: none;
+    }
+
+    .main-content {
+        padding: 10px;
+    }
+
+    .header {
+        height: 50px;
+    }
+
+    .logo {
+        font-size: 20px;
+    }
+
+    .menu {
+        display: none;
+    }
+}
+

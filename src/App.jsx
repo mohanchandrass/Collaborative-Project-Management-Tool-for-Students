@@ -7,6 +7,8 @@ import MainLayout from './components/MainLayout';
 import ProjectDashboard from './components/dashboard/ProjectDashboard';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
+import UserProfile from './components/UserProfile'; // Import the UserProfile component
+import UserSection from './components/UserSection'; // Import the UserSection component
 import './App.css';
 
 class ErrorBoundary extends React.Component {
@@ -33,12 +35,18 @@ class ErrorBoundary extends React.Component {
   }
 }
 
+// ✅ Updated ProtectedRoute with loading check
 const ProtectedRoute = ({ children }) => {
-  const { currentUser } = useContext(AuthContext);
-  return !currentUser ? <Navigate to="/login" replace /> : children;
+  const { currentUser, loading } = useContext(AuthContext);
+
+  if (loading) {
+    return <div className="loading">Loading...</div>; // or replace with a spinner
+  }
+
+  return currentUser ? children : <Navigate to="/login" replace />;
 };
 
-// ✅ Wrapper component to dynamically set a background class
+// ✅ Wrapper to dynamically set background class
 const PageWrapper = ({ children }) => {
   const location = useLocation();
 
@@ -68,17 +76,23 @@ function App() {
                   <Route path="/register" element={<Register />} />
 
                   {/* Protected Routes */}
-                  <Route path="/" element={
-                    <ProtectedRoute>
-                      <MainLayout />
-                    </ProtectedRoute>
-                  }>
+                  <Route
+                    path="/"
+                    element={
+                      <ProtectedRoute>
+                        <MainLayout />
+                      </ProtectedRoute>
+                    }
+                  >
                     <Route index element={<ProjectDashboard />} />
                     <Route path="projects" element={<ProjectDashboard />} />
                     <Route path="projects/:projectId" element={<ProjectDashboard />} />
+                    {/* Add UserProfile and UserSection routes here */}
+                    <Route path="/userprofile" element={<UserProfile />} />
+                    <Route path="/usersection" element={<UserSection />} />
                   </Route>
 
-                  {/* Fallback */}
+                  {/* Fallback Route */}
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </PageWrapper>

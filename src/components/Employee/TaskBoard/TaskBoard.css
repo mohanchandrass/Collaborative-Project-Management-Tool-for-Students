@@ -1,0 +1,35 @@
+.task-board {
+    padding: 20px;
+}
+
+.columns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.column {
+    flex: 1;
+    margin: 0 10px;
+}
+
+.task {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.task-button {
+    margin: 5px;
+}
+
+.do-it-now {
+    background-color: #4aad4d;
+    color: white;
+}
+
+.done {
+    background-color: #2196f3;
+    color: white;
+}

@@ -1,0 +1,14 @@
+.profile-container {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.profile-details {
+    margin-top: 10px;
+}
+
+.profile-details p {
+    margin: 5px 0;
+}

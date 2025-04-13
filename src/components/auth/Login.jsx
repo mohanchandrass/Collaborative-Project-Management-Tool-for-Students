@@ -18,8 +18,8 @@ const Login = () => {
     setError('');
 
     try {
-      await login(email, password);
-      alert('Logged in!');
+      await login(email.trim(), password.trim());
+      alert('✅ Successfully logged in!');
       navigate('/');
     } catch (err) {
       console.error("Login Error:", err);
@@ -40,6 +40,7 @@ const Login = () => {
           value={email}
           onChange={e => setEmail(e.target.value)}
           required
+          disabled={loading}
         />
         <input
           type="password"
@@ -47,6 +48,7 @@ const Login = () => {
           value={password}
           onChange={e => setPassword(e.target.value)}
           required
+          disabled={loading}
         />
         <button type="submit" disabled={loading}>
           {loading ? 'Logging in...' : 'Login'}

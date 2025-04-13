@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { auth, db } from '../firebase';
+import { auth, firestore } from '../firebase';  // Updated import
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -7,14 +7,23 @@ import {
   onAuthStateChanged,
   updateProfile
 } from 'firebase/auth';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
+import {
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  collection,
+  addDoc,
+  serverTimestamp
+} from 'firebase/firestore';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
-
-  const signup = async (username, email, password) => {
+  const [loading, setLoading] = useState(true);
+const signup = async (username, email, password) => {
+  try {
     const userCred = await createUserWithEmailAndPassword(auth, email, password);
     const uid = userCred.user.uid;
 
@@ -23,68 +32,119 @@ export const AuthProvider = ({ children }) => {
       username,
       email,
       avatar: `https://i.pravatar.cc/150?u=${uid}`,
+      status: 'Online',
+      createdAt: serverTimestamp(), 
       groups: []
     };
 
-    await setDoc(doc(db, 'users', uid), userData);
+    // Save user data to Firestore
+    try {
+      await setDoc(doc(firestore, 'users', uid), userData);
+    } catch (error) {
+      console.error("Error saving user data to Firestore: ", error);
+      throw new Error('Failed to save user data to Firestore');
+    }
 
-    // ✅ Update Firebase Auth profile
+    // Update profile with username
     await updateProfile(userCred.user, {
       displayName: username,
-      photoURL: userData.avatar
     });
+
+    setCurrentUser(userData);
+    return userData;
+  } catch (error) {
+    console.error("Error during signup:", error);
+    throw new Error(error.message); // Return the error message to be handled in the component
+  }
+};
+
+
+  // Login: Auth + Fetch Firestore profile
+  const login = async (email, password) => {
+    const userCred = await signInWithEmailAndPassword(auth, email, password);
+    const uid = userCred.user.uid;
+
+    // Log login timestamp
+    await addDoc(collection(firestore, 'users', uid, 'logins'), {
+      timestamp: serverTimestamp()
+    });
+
+    // Fetch user data from Firestore
+    const docSnap = await getDoc(doc(firestore, 'users', uid));
+    let userData;
+
+    if (docSnap.exists()) {
+      userData = docSnap.data();
+    } else {
+      // Fallback if user document doesn't exist
+      userData = {
+        id: uid,
+        email: userCred.user.email,
+        username: userCred.user.displayName || 'User',
+        avatar: userCred.user.photoURL || '', // This field might be empty since it's not used now
+        status: 'Online',
+        groups: []
+      };
+    }
 
     setCurrentUser(userData);
     return userData;
   };
 
-  const login = async (email, password) => {
-    const userCred = await signInWithEmailAndPassword(auth, email, password);
-    const uid = userCred.user.uid;
+  // Update profile: Only username and status (no profile picture)
+  const updateUserProfile = async (username, status) => {
+    const currentUser = auth.currentUser;
+    if (!currentUser) return;
 
-    const docSnap = await getDoc(doc(db, 'users', uid));
-    if (docSnap.exists()) {
-      const userData = docSnap.data();
-      setCurrentUser(userData);
-      return userData;
-    } else {
-      // Fallback if Firestore data is missing
-      const fallbackUser = {
-        id: uid,
-        email: userCred.user.email,
-        username: userCred.user.displayName || 'User',
-        avatar: userCred.user.photoURL || '',
-        groups: []
-      };
-      setCurrentUser(fallbackUser);
-      return fallbackUser;
-    }
+    const userDocRef = doc(firestore, 'users', currentUser.uid);
+
+    // Update the fields that can be changed (username and status)
+    await updateDoc(userDocRef, {
+      username: username.trim(),
+      status: status.trim(),
+    });
+
+    // Also update the local auth profile for username
+    await updateProfile(currentUser, {
+      displayName: username.trim(),
+    });
+
+    // Update the current user state
+    setCurrentUser(prevUser => ({
+      ...prevUser,
+      username: username.trim(),
+      status: status.trim(),
+    }));
   };
 
+  // Logout
   const logout = async () => {
     await signOut(auth);
     setCurrentUser(null);
   };
 
+  // Automatically load user from Firestore
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const docSnap = await getDoc(doc(db, 'users', user.uid));
+        const docSnap = await getDoc(doc(firestore, 'users', user.uid));
         if (docSnap.exists()) {
           setCurrentUser(docSnap.data());
         } else {
-          // Fallback if Firestore data not found
+          // Fallback if user document doesn't exist
           setCurrentUser({
             id: user.uid,
             email: user.email,
             username: user.displayName || 'User',
-            avatar: user.photoURL || '',
+            avatar: user.photoURL || '', // Avatar might be empty now
+            status: 'Online',
             groups: []
           });
         }
       } else {
         setCurrentUser(null);
       }
+      setLoading(false);
     });
 
     return () => unsubscribe();
@@ -96,7 +156,9 @@ export const AuthProvider = ({ children }) => {
         currentUser,
         signup,
         login,
-        logout
+        updateUserProfile,
+        logout,
+        loading
       }}
     >
       {children}

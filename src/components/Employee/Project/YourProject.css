@@ -1,0 +1,48 @@
+/* src/components/Project/YourProject.css */
+
+.your-project {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.your-project h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.your-project ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.your-project li {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.your-project li h3 {
+    font-size: 20px;
+    color: #007BFF;
+    margin: 0 0 10px 0;
+}
+
+.your-project li p {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+}
+
+.your-project p {
+    font-size: 16px;
+    color: #999;
+    text-align: center;
+}

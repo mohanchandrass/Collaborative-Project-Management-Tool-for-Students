@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
-import { AuthContext } from '../../context/AuthContext';
+import { AuthContext } from "../../context/AuthContext";
+import { Link, useNavigate } from 'react-router-dom';
 import "../../styles/AuthForm.css";
-import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const { signup } = useContext(AuthContext);
@@ -11,37 +11,35 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
-    // ✅ Basic username validation
-    if (username.trim().length < 3) {
-      setError('Username must be at least 3 characters.');
-      return;
-    }
+    setError('');
+    setLoading(true);
 
     try {
-      await signup(username, email, password);
-      setError('');
-      alert('Registration successful!');
-      navigate('/login');
+      // Call the signup function from AuthContext
+      await signup(username.trim(), email.trim(), password.trim());
+      alert('✅ Account created successfully!');
+      navigate('/'); // Redirect after successful registration
     } catch (err) {
-      // ✅ Handle Firebase auth error codes
+      console.error("Registration Error:", err);
+      
+      // Handle specific errors, like email already in use
       if (err.code === 'auth/email-already-in-use') {
-        setError('This email is already registered.');
-      } else if (err.code === 'auth/invalid-email') {
-        setError('Invalid email format.');
-      } else if (err.code === 'auth/weak-password') {
-        setError('Password must be at least 6 characters.');
+        setError('This email is already registered. Please log in.');
       } else {
-        setError('Something went wrong during registration.');
+        setError(err.message || 'Something went wrong during registration.');
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="auth-container">
+      <h1 className="app-name">ProjectHub</h1>
       <h2>Register</h2>
       <form onSubmit={handleRegister} className="auth-form">
         <input
@@ -50,6 +48,7 @@ const Register = () => {
           value={username}
           onChange={e => setUsername(e.target.value)}
           required
+          disabled={loading}
         />
         <input
           type="email"
@@ -57,6 +56,7 @@ const Register = () => {
           value={email}
           onChange={e => setEmail(e.target.value)}
           required
+          disabled={loading}
         />
         <input
           type="password"
@@ -64,15 +64,18 @@ const Register = () => {
           value={password}
           onChange={e => setPassword(e.target.value)}
           required
+          disabled={loading}
         />
-        <button type="submit">Register</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Registering...' : 'Register'}
+        </button>
       </form>
       {error && <p className="error">{error}</p>}
       <p>
         Already have an account?{' '}
-        <a href="/login" style={{ color: 'Gray' }}>
+        <Link to="/login" style={{ color: 'Gray' }}>
           Login
-        </a>
+        </Link>
       </p>
     </div>
   );
