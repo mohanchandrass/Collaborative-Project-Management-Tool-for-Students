@@ -246,6 +246,7 @@ const Chat = () => {
     <div
       key={friend.uid}
       className={`friend-item ${selectedFriend?.uid === friend.uid ? 'active' : ''}`}
+      onClick={() => setSelectedFriend(friend)}
     >
       <div
         onClick={() => setSelectedFriend(friend)}
