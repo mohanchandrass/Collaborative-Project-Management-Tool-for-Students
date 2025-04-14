@@ -7,10 +7,16 @@ import MainLayout from './components/MainLayout';
 import ProjectDashboard from './components/dashboard/ProjectDashboard';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
-import UserProfile from './components/UserProfile'; // Import the UserProfile component
-import UserSection from './components/UserSection'; // Import the UserSection component
-import GroupPage from './components/GroupPage'; // Import the GroupPage component
+import UserProfile from './components/UserProfile';
+import UserSection from './components/UserSection';
+import GroupPage from './components/GroupPage';
 import Chat from './components/Chat';
+import TaskChart from './components/dashboard/TaskChart';
+import TaskStatus from './components/dashboard/TaskStatus';
+import UserDashboard from './components/dashboard/UserDashboard';
+import ChartGenerator from './components/dashboard/ChartGenerator'; 
+import Calculator from './components/dashboard/Calculator';
+import Dictionary from './components/dashboard/Dictionary';
 import './App.css';
 
 class ErrorBoundary extends React.Component {
@@ -37,23 +43,21 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-// ✅ Updated ProtectedRoute with loading check
 const ProtectedRoute = ({ children }) => {
   const { currentUser, loading } = useContext(AuthContext);
 
   if (loading) {
-    return <div className="loading">Loading...</div>; // or replace with a spinner
+    return <div className="loading">Loading...</div>;
   }
 
   return currentUser ? children : <Navigate to="/login" replace />;
 };
 
-// ✅ Wrapper to dynamically set background class
 const PageWrapper = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    document.body.className = ''; // Reset all classes
+    document.body.className = '';
     if (location.pathname === '/login') {
       document.body.classList.add('login-page');
     } else if (location.pathname === '/register') {
@@ -73,11 +77,9 @@ function App() {
             <TaskProvider>
               <PageWrapper>
                 <Routes>
-                  {/* Public Routes */}
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
 
-                  {/* Protected Routes */}
                   <Route
                     path="/"
                     element={
@@ -89,18 +91,18 @@ function App() {
                     <Route index element={<ProjectDashboard />} />
                     <Route path="projects" element={<ProjectDashboard />} />
                     <Route path="projects/:projectId" element={<ProjectDashboard />} />
-
-                    {/* User-specific Routes */}
                     <Route path="userprofile" element={<UserProfile />} />
                     <Route path="usersection" element={<UserSection />} />
-
-                    {/* Add the GroupPage route */}
                     <Route path="/chat" element={<Chat />} />
                     <Route path="group/:groupId" element={<GroupPage />} />
+                    <Route path="/chart" element={<TaskChart />} />
+                    <Route path="/TaskStatus" element={<TaskStatus />} />
+                    <Route path="/dashboard" element={<UserDashboard />} />
+                    <Route path="/ChartGenerator" element={<ChartGenerator />} />
+                    <Route path="/Calculator" element={<Calculator />} />
+                    <Route path="/Dictionary" element={<Dictionary />} />
+                    <Route path="*" element={<Navigate to="/" replace />} />
                   </Route>
-
-                  {/* Fallback Route */}
-                  <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </PageWrapper>
             </TaskProvider>

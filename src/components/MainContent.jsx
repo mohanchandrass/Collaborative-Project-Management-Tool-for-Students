@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { firestore } from '../firebase';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 
 import ProjectDashboard from './dashboard/ProjectDashboard';
 import UserDashboard from './dashboard/UserDashboard';
@@ -22,6 +23,7 @@ const TABS = [
 const MainContent = ({ selectedProjectId }) => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [project, setProject] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProjectData = async () => {
@@ -67,10 +69,10 @@ const MainContent = ({ selectedProjectId }) => {
     switch (activeTab) {
       case 'dashboard':
         return (
-          <>
+          <div className="dashboard-grid">
             <ProjectDashboard project={project} />
-            <UserDashboard project={project} />
-          </>
+            <UserDashboard />
+          </div>
         );
       case 'tasks':
         return <TaskList project={project} />;
@@ -108,6 +110,12 @@ const MainContent = ({ selectedProjectId }) => {
               {tab.label}
             </button>
           ))}
+          <button
+            className="my-projects-btn"
+            onClick={() => navigate('/projects')}
+          >
+            My Projects
+          </button>
         </div>
       </div>
 
@@ -120,30 +128,36 @@ const MainContent = ({ selectedProjectId }) => {
 
       <Notifications />
 
-      {/* Inline CSS for the component */}
       <style jsx="true">{`
         .main-content {
-          padding: 20px;
+          padding: 0;
+          margin: 0;
           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          display: flex;
+          flex-direction: column;
+          height: 100vh;
+          background-color: #1e1e2f;
         }
 
         .content-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          border-bottom: 2px solid #eee;
-          padding-bottom: 10px;
+          border-bottom: 2px solid #333;
+          padding: 20px;
         }
 
         .tabs {
           display: flex;
           gap: 10px;
+          flex-wrap: wrap;
         }
 
         .tabs button {
           padding: 10px 15px;
           border: none;
-          background-color: #f1f1f1;
+          background-color: #2e2e3e;
+          color: white;
           border-radius: 6px;
           cursor: pointer;
           font-weight: bold;
@@ -152,15 +166,16 @@ const MainContent = ({ selectedProjectId }) => {
 
         .tabs button.active {
           background-color: #007bff;
-          color: white;
         }
 
         .tabs button:hover {
-          background-color: #e0e0e0;
+          background-color: #3a3a4a;
         }
 
         .content-body {
-          margin-top: 20px;
+          flex: 1;
+          padding: 20px;
+          overflow-y: auto;
         }
 
         .save-demo-button {
@@ -176,6 +191,26 @@ const MainContent = ({ selectedProjectId }) => {
 
         .save-demo-button:hover {
           background-color: #45a049;
+        }
+
+        .my-projects-btn {
+          background-color: #673ab7;
+          color: white;
+          padding: 10px 15px;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-weight: bold;
+        }
+
+        .my-projects-btn:hover {
+          background-color: #5e35b1;
+        }
+
+        .dashboard-grid {
+          display: flex;
+          gap: 20px;
+          flex-wrap: wrap;
         }
       `}</style>
     </div>

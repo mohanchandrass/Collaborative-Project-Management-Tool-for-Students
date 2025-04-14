@@ -1,313 +1,422 @@
-/* GroupPage.css */
+/* Layout */
 .group-page-layout {
   display: flex;
   height: 100vh;
+  background-color: #313338;
+  color: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
 }
 
+/* Left Sidebar */
 .group-sidebar {
-  width: 300px;
-  background-color: #2f3136;
-  color: white;
+  width: 260px;
+  background-color: #2b2d31;
   padding: 20px;
+  border-right: 1px solid #1e1f22;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  border-right: 1px solid #444;
 }
 
 .group-sidebar h1 {
-  margin-bottom: 20px;
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.back-button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 18px;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.back-button:hover {
-  color: #7289da;
-}
-
-.settings-button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 24px;
-  cursor: pointer;
-}
-
-.settings-button:hover {
-  color: #7289da;
-}
-
-.group-settings {
-  margin-top: 20px;
-  width: 100%;
-}
-
-.group-settings input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
-
-.group-settings button {
-  width: 100%;
-  padding: 10px;
-  background-color: #7289da;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.group-settings button:hover {
-  background-color: #5b6e92;
-}
-
-/* Adjusted layout: Task board on the left side of the dashboard */
-.group-main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  padding: 20px;
-  background-color: white;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  margin: 20px;
-}
-
-.dashboard {
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-}
-
-.dashboard h2 {
-  font-size: 28px;
-  margin-bottom: 10px;
-}
-
-.dashboard p {
-  font-size: 18px;
-}
-
-.task-board {
-  flex: 1;
-  margin-right: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background-color: #f4f6f8;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.task-board .create-task-box {
-  background-color: #ffffff;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.create-task-box input,
-.create-task-box textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
-
-.create-task-box button {
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.create-task-box button:hover {
-  background-color: #45a049;
-}
-
-.ongoing-tasks {
-  flex: 1;
-  background-color: #f9f9f9;
-  padding: 20px;
-  margin-top: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.ongoing-tasks h3 {
   font-size: 22px;
+  font-weight: 600;
   margin-bottom: 20px;
 }
 
-.ongoing-tasks .task {
-  background-color: #ffffff;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 15px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+/* Settings Buttons */
+.settings-button,
+.leave-group-button,
+.delete-group-button {
+  background-color: #5865f2;
+  color: white;
+  font-size: 14px;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
 }
 
-.ongoing-tasks .task h4 {
-  font-size: 18px;
-  margin-bottom: 10px;
+.settings-button:hover,
+.leave-group-button:hover,
+.delete-group-button:hover {
+  background-color: #4752c4;
 }
 
-.ongoing-tasks .task p {
+/* Invite Code */
+.invite-code-box {
+  background-color: #1e1f22;
+  border: 1px dashed #5865f2;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.invite-code-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.copy-button {
+  background: none;
+  border: none;
+  color: #5865f2;
+  cursor: pointer;
   font-size: 16px;
 }
 
-.group-members-panel {
-  width: 300px;
-  background-color: #36393f;
-  color: white;
-  padding: 20px;
+.copy-button:hover {
+  color: #99aab5;
+}
+
+/* Settings Panel */
+.group-settings {
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
-  border-left: 1px solid #444;
+  gap: 10px;
+}
+
+.group-settings input {
+  padding: 10px;
+  background-color: #1e1f22;
+  color: white;
+  border: 1px solid #4e5058;
+  border-radius: 6px;
+}
+
+.group-settings button {
+  background-color: #5865f2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.group-settings button:hover {
+  background-color: #4752c4;
+}
+
+/* Main Content */
+.group-main-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #313338;
+}
+
+/* Right Sidebar (Members) */
+.group-members-panel {
+  width: 280px;
+  background-color: #2b2d31;
+  padding: 20px;
+  border-left: 1px solid #1e1f22;
+  overflow-y: auto;
 }
 
 .group-members-panel h2 {
-  font-size: 22px;
+  font-size: 18px;
+  margin-bottom: 15px;
   display: flex;
   align-items: center;
+  gap: 6px;
 }
 
-.group-members-panel .members-list {
-  margin-top: 20px;
-  flex: 1;
+/* Member Cards */
+.members-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.group-members-panel .member-card {
+.member-card {
+  background-color: #1e1f22;
+  padding: 10px;
+  border-radius: 6px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #4f545c;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 15px;
-  color: white;
-}
-
-.member-card:hover {
-  background-color: #5b636b;
 }
 
 .member-info {
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 
-.member-avatar {
-  width: 30px;
-  height: 30px;
+.member-avatar,
+.member-avatar-default {
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  margin-right: 10px;
+  background-color: #5865f2;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .member-avatar-default {
-  width: 30px;
-  height: 30px;
-  background-color: #7289da;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .remove-member-button {
   background: none;
   border: none;
-  color: white;
+  color: #ff6b6b;
   cursor: pointer;
+  font-size: 16px;
+  transition: color 0.2s ease-in-out;
 }
 
 .remove-member-button:hover {
   color: #ff4d4d;
 }
 
-.leave-group-button {
-  background-color: #ff4747;
+.admin-badge {
+  background-color: #5865f2;
   color: white;
-  padding: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 20px;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+}
+
+/* Leave/Delete Buttons */
+.leave-group-button {
+  background-color: #f04747;
 }
 
 .leave-group-button:hover {
-  background-color: #e04141;
+  background-color: #d83c3e;
 }
 
-.admin-badge {
-  background-color: #7289da;
-  color: white;
-  padding: 5px;
-  border-radius: 4px;
-  font-size: 12px;
-  margin-left: 10px;
+.delete-group-button {
+  background-color: #ed4245;
 }
 
-.invite-code-box {
-  background-color: #444c56;
-  border: 1px dashed #7289da;
+.delete-group-button:hover {
+  background-color: #c03c3e;
+}
+
+/* Dashboard + Tasks */
+.dashboard {
+  padding: 20px;
+  background-color: #36393f;
   border-radius: 8px;
-  padding: 12px;
-  margin-top: 10px;
-  width: 100%;
-  color: #ffffff;
-  font-size: 14px;
 }
 
-.invite-code-box p {
-  margin: 0;
-  font-weight: bold;
+.dashboard h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.task-board {
+  margin-top: 20px;
+  background-color: #2b2d31;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.task-board h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.task-board .task {
+  background-color: #1e1f22;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.task-board .task h4 {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.task-board .task p {
   font-size: 14px;
   color: #b9bbbe;
 }
 
-.invite-code-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 6px;
+/* Create Task Box */
+.create-task-box input,
+.create-task-box textarea {
+  width: 100%;
+  background-color: #1e1f22;
+  color: white;
+  border: 1px solid #4e5058;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
-.invite-code-row strong {
+.create-task-box button {
+  background-color: #57f287;
+  color: #1e1f22;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.create-task-box button:hover {
+  background-color: #45c971;
+}
+
+/* Chat Preview */
+.chat-preview {
+  background-color: #1e1f22;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 6px;
+}
+
+.chat-preview h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* Project & Task Preview Cards */
+.projects-preview,
+.tasks-preview {
+  margin-top: 20px;
+}
+
+.preview-card {
+  background-color: #1e1f22;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.preview-card h4 {
   font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.preview-card p {
+  font-size: 14px;
+  color: #b9bbbe;
+}
+
+/* Chat Box & Message Box */
+.chat-box {
+  padding: 12px;
+  margin-bottom: 12px;
+  background-color: #2b2d31;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.chat-box:hover {
+  background-color: #3a3f47;
+}
+
+.chat-message {
+  margin-bottom: 8px;
+  color: #b9bbbe;
+  font-size: 14px;
+}
+
+.chat-message strong {
   color: #ffffff;
 }
 
-.copy-button {
-  background: none;
-  border: none;
-  color: #7289da;
-  font-size: 16px;
-  cursor: pointer;
-  transition: color 0.2s ease-in-out;
+.chat-messages {
+  max-height: 300px;
+  overflow-y: auto;
 }
 
-.copy-button:hover {
-  color: #99aab5;
+.chat-messages input {
+  width: 100%;
+  padding: 10px;
+  background-color: #1e1f22;
+  color: white;
+  border: 1px solid #4e5058;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.chat-messages button {
+  background-color: #5865f2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.chat-messages button:hover {
+  background-color: #4752c4;
+}
+
+/* Admin-Only Chat Button */
+.create-chat-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.create-chat-button:hover {
+  background-color: #45a049;
+}
+
+/* Sidebar Divider */
+.group-sidebar hr {
+  margin: 15px 0;
+  border: 1px solid #1e1f22;
+}
+
+.chat-view {
+  background-color: #2b2d31;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 12px;
+}
+
+.chat-view::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-view::-webkit-scrollbar-thumb {
+  background-color: #5865f2;
+  border-radius: 4px;
+}
+
+.nav-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #7f7f7f;
+}
+
+.nav-button:disabled:hover {
+  background-color: #d6d6d6;
 }

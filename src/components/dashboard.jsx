@@ -73,28 +73,29 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
-        <h1>Project Dashboard</h1>
+        <h1>Project Dashboard</h1><br></br>
+        <h2>Add</h2><br></br>
         <Link to="/create-project" className="create-project-button">
           + New Project
         </Link>
       </header>
 
       <section className="projects-overview">
-        <h2>My Projects</h2>
-        <div className="project-cards">
-          {projects.length === 0 ? (
-            <p>No projects available.</p>
-          ) : (
-            projects.map(project => (
-              <div key={project.id} className="project-card">
-                <h3>{project.name}</h3>
-                <p>Status: {project.status}</p>
-                <Link to={`/projects/${project.id}`}>View Details</Link>
-              </div>
-            ))
-          )}
-        </div>
-      </section>
+  <div className="projects-header">
+    <h2>My Projects</h2><br></br>
+    {/* 👇 Add the button here */}
+    <Link to="/my-projects" className="view-projects-button">
+      View All My Projects
+    </Link>
+    
+  </div>
+  <div className="project-cards">
+    
+  </div>
+  
+
+</section>
+
 
       {currentSprint && (
         <section className="sprint-progress">
@@ -110,20 +111,10 @@ const Dashboard = () => {
 
       <section className="task-status">
         <h2>Task Status</h2>
-        <div className="task-status-cards">
-          <div className="task-card">
-            <h4>To Do</h4>
-            <p>{taskCounts.toDo} Tasks</p>
-          </div>
-          <div className="task-card">
-            <h4>In Progress</h4>
-            <p>{taskCounts.inProgress} Tasks</p>
-          </div>
-          <div className="task-card">
-            <h4>Completed</h4>
-            <p>{taskCounts.completed} Tasks</p>
-          </div>
-        </div>
+        <br></br>
+        <Link to="/task-status" className="view-projects-button">
+  View Task Status
+</Link>
       </section>
     </div>
   );

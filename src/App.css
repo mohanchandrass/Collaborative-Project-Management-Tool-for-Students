@@ -59,7 +59,7 @@ body {
 /* App Container */
 
 .app-container {
- display: flex;
+  display: flex;
   width: 100%;
   height: 100vh;
 }
@@ -165,7 +165,7 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 0;
+  padding: 0px;
   overflow-y: auto;
   overflow-y: auto;
 }
@@ -469,4 +469,42 @@ a:hover {
         display: none;
     }
 }
+
+html, body, #root {
+  height: auto;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.calculator {
+  margin-top: 2rem;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #f9f9f9;
+}
+
+.calculator input,
+.calculator select {
+  margin: 0.5rem;
+  padding: 0.4rem;
+  font-size: 1rem;
+}
+
+.calculator button {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.calc-result {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
 

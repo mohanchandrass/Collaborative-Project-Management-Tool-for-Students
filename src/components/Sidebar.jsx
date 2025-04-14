@@ -143,21 +143,30 @@ const Sidebar = () => {
   
     setLoading(true);
     try {
+      // Create an invite code (this part remains the same)
       const inviteCode = Math.random().toString(36).substring(2, 8).toUpperCase(); // e.g., 'A1B2C3'
   
+      // Add a new group document
       const groupRef = await addDoc(collection(firestore, 'groups'), {
         name: newGroupName.trim(),
         createdBy: currentUser.uid,
-        members: [currentUser.uid],
+        members: [currentUser.uid],  // Initially the creator is the only member
         admin: currentUser.uid,
-        inviteCode, // <-- Include invite code here
+        inviteCode, // Invite code for the group
         createdAt: new Date(),
       });
   
+      // Store the group ID in the document itself (ensures easy access later)
+      await updateDoc(groupRef, {
+        groupId: groupRef.id  // Store the generated group ID inside the document
+      });
+  
+      console.log("Group created with ID:", groupRef.id);
       setNewGroupName('');
       setGroupModalOpen(false);
     } catch (error) {
       console.error("Failed to create group:", error);
+      alert("Error creating group. Please check the console for more details.");
     } finally {
       setLoading(false);
     }

@@ -9,20 +9,28 @@ import {
   query,
   collection,
   where,
-  getDocs
+  getDocs,
+  deleteDoc,
 } from 'firebase/firestore';
 import { auth, firestore } from '../firebase';
 import { AuthContext } from '../context/AuthContext';
 import {
   FiUsers,
   FiSettings,
-  FiArrowLeft,
   FiTrash2,
   FiPlus,
-  FiCopy
+  FiCopy,
+  FiHome,
+  FiFilePlus,
+  FiFolder,
+  FiCheckSquare
 } from 'react-icons/fi';
 import '../styles/GroupPage.css';
-import Dashboard from './dashboard';
+import Dashboard from './Dashboard';
+import NewProjects from './dashboard/NewProjects';
+import MyProjects from './dashboard/MyProjects';
+import TaskStatus from './dashboard/TaskStatus';
+import TaskChart from './dashboard/TaskChart';
 
 const GroupPage = () => {
   const { groupId } = useParams();
@@ -36,22 +44,20 @@ const GroupPage = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [usersData, setUsersData] = useState([]);
   const [inviteCode, setInviteCode] = useState('');
+  const [activeTab, setActiveTab] = useState('dashboard');
+
+  const isAdmin = currentUser && group?.admin === currentUser.uid;
 
   useEffect(() => {
     const fetchGroup = async () => {
       try {
         const groupDoc = await getDoc(doc(firestore, 'groups', groupId));
-
-        if (!groupDoc.exists()) {
-          throw new Error('Group not found');
-        }
+        if (!groupDoc.exists()) throw new Error('Group not found');
 
         const groupData = groupDoc.data();
         setGroup({ id: groupDoc.id, ...groupData });
 
-        if (groupData.inviteCode) {
-          setInviteCode(groupData.inviteCode);
-        }
+        if (groupData.inviteCode) setInviteCode(groupData.inviteCode);
 
         const membersData = await Promise.all(
           groupData.members.map(async (memberId) => {
@@ -59,8 +65,8 @@ const GroupPage = () => {
             return userDoc.exists() ? { id: userDoc.id, ...userDoc.data() } : null;
           })
         );
-
         setUsersData(membersData.filter(Boolean));
+
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -70,6 +76,19 @@ const GroupPage = () => {
 
     fetchGroup();
   }, [groupId]);
+
+  const renderDashboardContent = () => {
+    switch (activeTab) {
+      case 'new-project':
+        return <NewProjects groupId={groupId} />;
+      case 'my-projects':
+        return <MyProjects groupId={groupId} userId={currentUser?.uid} />;
+      case 'task-status':
+        return <TaskStatus groupId={groupId} />;
+      default:
+        return <Dashboard groupId={groupId} />;
+    }
+  };
 
   const handleAddMember = async () => {
     if (!newMemberEmail.trim()) return;
@@ -81,21 +100,16 @@ const GroupPage = () => {
       );
       const querySnapshot = await getDocs(usersQuery);
 
-      if (querySnapshot.empty) {
-        throw new Error('User with this email not found');
-      }
+      if (querySnapshot.empty) throw new Error('User not found');
 
       const userDoc = querySnapshot.docs[0];
       const userId = userDoc.id;
 
       await updateDoc(doc(firestore, 'groups', groupId), {
-        members: arrayUnion(userId)
+        members: arrayUnion(userId),
       });
 
-      const updatedGroupDoc = await getDoc(doc(firestore, 'groups', groupId));
-      setGroup({ id: updatedGroupDoc.id, ...updatedGroupDoc.data() });
-
-      setUsersData([...usersData, { id: userDoc.id, ...userDoc.data() }]);
+      setUsersData([...usersData, { id: userId, ...userDoc.data() }]);
       setNewMemberEmail('');
     } catch (err) {
       alert(`Error adding member: ${err.message}`);
@@ -103,16 +117,12 @@ const GroupPage = () => {
   };
 
   const handleRemoveMember = async (memberId) => {
-    if (!currentUser || group.admin !== currentUser.uid) return;
+    if (!isAdmin) return;
 
     try {
       await updateDoc(doc(firestore, 'groups', groupId), {
-        members: arrayRemove(memberId)
+        members: arrayRemove(memberId),
       });
-
-      const updatedGroupDoc = await getDoc(doc(firestore, 'groups', groupId));
-      setGroup({ id: updatedGroupDoc.id, ...updatedGroupDoc.data() });
-
       setUsersData(usersData.filter(user => user.id !== memberId));
     } catch (err) {
       alert('Error removing member');
@@ -120,27 +130,81 @@ const GroupPage = () => {
   };
 
   const handleLeaveGroup = async () => {
-    if (!currentUser) return;
-
     try {
-      await updateDoc(doc(firestore, 'groups', groupId), {
-        members: arrayRemove(currentUser.uid)
-      });
+      if (!group) return;
+
+      const confirmed = window.confirm('Are you sure you want to leave this group?');
+      if (!confirmed) return;
+
+      const groupRef = doc(firestore, 'groups', groupId);
+      const isOnlyMember = group.members.length === 1;
+      const isAdmin = group.admin === currentUser.uid;
+
+      if (isOnlyMember) {
+        await deleteDoc(groupRef);
+        alert('Group deleted because you were the only member.');
+        navigate('/');
+        return;
+      }
+
+      if (isAdmin) {
+        const remainingMembers = group.members.filter((id) => id !== currentUser.uid);
+        const newAdmin = remainingMembers[0];
+
+        await updateDoc(groupRef, {
+          admin: newAdmin,
+          members: arrayRemove(currentUser.uid),
+        });
+
+        alert(`You left the group. Admin rights transferred to another member.`);
+      } else {
+        await updateDoc(groupRef, {
+          members: arrayRemove(currentUser.uid),
+        });
+      }
 
       navigate('/');
     } catch (err) {
       alert('Error leaving group');
+      console.error(err);
+    }
+  };
+
+  const handleDeleteGroup = async () => {
+    const confirmed = window.confirm('Are you sure you want to delete this group? This cannot be undone.');
+    if (!confirmed) return;
+
+    try {
+      await deleteDoc(doc(firestore, 'groups', groupId));
+      navigate('/');
+    } catch (err) {
+      alert('Failed to delete group');
     }
   };
 
   const handleGenerateInviteCode = async () => {
-    const code = Math.random().toString(36).substring(2, 10);
+    const generateCode = () => Math.random().toString(36).substring(2, 10);
+    let uniqueCode = generateCode();
+
+    const checkIfCodeExists = async (code) => {
+      const groupsQuery = query(collection(firestore, 'groups'), where('inviteCode', '==', code));
+      const groupsSnapshot = await getDocs(groupsQuery);
+      return !groupsSnapshot.empty;
+    };
+
     try {
+      let isUnique = false;
+      while (!isUnique) {
+        isUnique = !(await checkIfCodeExists(uniqueCode));
+        if (!isUnique) uniqueCode = generateCode();
+      }
+
       await updateDoc(doc(firestore, 'groups', groupId), {
-        inviteCode: code
+        inviteCode: uniqueCode,
       });
-      setInviteCode(code);
-    } catch (err) {
+
+      setInviteCode(uniqueCode);
+    } catch {
       alert('Error generating invite code');
     }
   };
@@ -154,18 +218,39 @@ const GroupPage = () => {
   if (error) return <div className="error-container">{error}</div>;
   if (!group) return <div className="not-found">Group not found</div>;
 
-  const isAdmin = currentUser && group.admin === currentUser.uid;
-
   return (
     <div className="group-page-layout">
-      {/* Left Sidebar */}
       <div className="group-sidebar">
-        <button className="back-button" onClick={() => navigate('/')}>
-          <FiArrowLeft /> Back
-        </button>
-        <h1>{group.name}</h1>
+        <h1 className="group-title">{group.name}</h1>
 
-        {/* Always Show Invite Code */}
+        {/* Dashboard Navigation */}
+        <div className="dashboard-nav">
+          <button 
+            className={`nav-button ${activeTab === 'dashboard' ? 'active' : ''}`}
+            onClick={() => setActiveTab('dashboard')}
+          >
+            <FiHome className="nav-icon" /> Dashboard
+          </button>
+          <button 
+            className={`nav-button ${activeTab === 'new-project' ? 'active' : ''}`}
+            onClick={() => setActiveTab('new-project')}
+          >
+            <FiFilePlus className="nav-icon" /> New Project
+          </button>
+          <button 
+            className={`nav-button ${activeTab === 'my-projects' ? 'active' : ''}`}
+            onClick={() => setActiveTab('my-projects')}
+          >
+            <FiFolder className="nav-icon" /> My Projects
+          </button>
+          <button 
+            className={`nav-button ${activeTab === 'task-status' ? 'active' : ''}`}
+            onClick={() => setActiveTab('task-status')}
+          >
+            <FiCheckSquare className="nav-icon" /> Task Status
+          </button>
+        </div>
+
         {inviteCode && (
           <div className="invite-code-box">
             <p>Invite Code:</p>
@@ -178,16 +263,24 @@ const GroupPage = () => {
           </div>
         )}
 
-        {isAdmin && (
-          <button
-            className="settings-button"
-            onClick={() => setShowSettings(!showSettings)}
-          >
-            <FiSettings />
+        <hr />
+
+        {isAdmin ? (
+          <>
+            <button className="settings-button" onClick={() => setShowSettings(!showSettings)}>
+              <FiSettings /> Group Settings
+            </button>
+            <button className="delete-group-button" onClick={handleDeleteGroup}>
+              <FiTrash2 /> Delete Group
+            </button>
+          </>
+        ) : (
+          <button className="leave-group-button" onClick={handleLeaveGroup}>
+            Leave Group
           </button>
         )}
 
-        {showSettings && isAdmin && (
+        {showSettings && (
           <div className="group-settings">
             <input
               type="email"
@@ -198,22 +291,17 @@ const GroupPage = () => {
             <button onClick={handleAddMember}>
               <FiPlus /> Add
             </button>
-
-            <div className="invite-code-section">
-              <button onClick={handleGenerateInviteCode}>
-                Generate New Invite Code
-              </button>
-            </div>
+            <button onClick={handleGenerateInviteCode}>
+              Generate New Invite Code
+            </button>
           </div>
         )}
       </div>
 
-      {/* Center Content with Dashboard */}
       <div className="group-main-content">
-        <Dashboard groupId={groupId} />
+        {renderDashboardContent()}
       </div>
 
-      {/* Right Members Panel */}
       <div className="group-members-panel">
         <h2><FiUsers /> Members</h2>
         <div className="members-list">
@@ -221,14 +309,14 @@ const GroupPage = () => {
             <div key={user.id} className="member-card">
               <div className="member-info">
                 {user.photoURL ? (
-                  <img src={user.photoURL} alt={user.displayName} className="member-avatar" />
+                  <img src={user.photoURL} alt={user.displayName || user.email} className="member-avatar" />
                 ) : (
                   <div className="member-avatar-default">
-                    {user.displayName?.charAt(0) || 'U'}
+                    {(user.displayName || user.username || user.email)?.charAt(0).toUpperCase()}
                   </div>
                 )}
                 <div>
-                  <h4>{user.displayName || 'Unknown'}</h4>
+                  <h4>{user.displayName || user.username || user.email}</h4>
                   <p>{user.email}</p>
                   {user.id === group.admin && <span className="admin-badge">Admin</span>}
                 </div>
@@ -244,12 +332,6 @@ const GroupPage = () => {
             </div>
           ))}
         </div>
-
-        {!isAdmin && (
-          <button className="leave-group-button" onClick={handleLeaveGroup}>
-            Leave Group
-          </button>
-        )}
       </div>
     </div>
   );
