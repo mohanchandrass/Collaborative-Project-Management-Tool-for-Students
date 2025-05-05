@@ -1,0 +1,422 @@
+/* Layout */
+.group-page-layout {
+  display: flex;
+  height: 100vh;
+  background-color: #313338;
+  color: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Left Sidebar */
+.group-sidebar {
+  width: 260px;
+  background-color: #2b2d31;
+  padding: 20px;
+  border-right: 1px solid #1e1f22;
+  display: flex;
+  flex-direction: column;
+}
+
+.group-sidebar h1 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* Settings Buttons */
+.settings-button,
+.leave-group-button,
+.delete-group-button {
+  background-color: #5865f2;
+  color: white;
+  font-size: 14px;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.settings-button:hover,
+.leave-group-button:hover,
+.delete-group-button:hover {
+  background-color: #4752c4;
+}
+
+/* Invite Code */
+.invite-code-box {
+  background-color: #1e1f22;
+  border: 1px dashed #5865f2;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.invite-code-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.copy-button {
+  background: none;
+  border: none;
+  color: #5865f2;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.copy-button:hover {
+  color: #99aab5;
+}
+
+/* Settings Panel */
+.group-settings {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.group-settings input {
+  padding: 10px;
+  background-color: #1e1f22;
+  color: white;
+  border: 1px solid #4e5058;
+  border-radius: 6px;
+}
+
+.group-settings button {
+  background-color: #5865f2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.group-settings button:hover {
+  background-color: #4752c4;
+}
+
+/* Main Content */
+.group-main-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #313338;
+}
+
+/* Right Sidebar (Members) */
+.group-members-panel {
+  width: 280px;
+  background-color: #2b2d31;
+  padding: 20px;
+  border-left: 1px solid #1e1f22;
+  overflow-y: auto;
+}
+
+.group-members-panel h2 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Member Cards */
+.members-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.member-card {
+  background-color: #1e1f22;
+  padding: 10px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.member-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.member-avatar,
+.member-avatar-default {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #5865f2;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.member-avatar-default {
+  font-size: 14px;
+}
+
+.remove-member-button {
+  background: none;
+  border: none;
+  color: #ff6b6b;
+  cursor: pointer;
+  font-size: 16px;
+  transition: color 0.2s ease-in-out;
+}
+
+.remove-member-button:hover {
+  color: #ff4d4d;
+}
+
+.admin-badge {
+  background-color: #5865f2;
+  color: white;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+}
+
+/* Leave/Delete Buttons */
+.leave-group-button {
+  background-color: #f04747;
+}
+
+.leave-group-button:hover {
+  background-color: #d83c3e;
+}
+
+.delete-group-button {
+  background-color: #ed4245;
+}
+
+.delete-group-button:hover {
+  background-color: #c03c3e;
+}
+
+/* Dashboard + Tasks */
+.dashboard {
+  padding: 20px;
+  background-color: #36393f;
+  border-radius: 8px;
+}
+
+.dashboard h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.task-board {
+  margin-top: 20px;
+  background-color: #2b2d31;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.task-board h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.task-board .task {
+  background-color: #1e1f22;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.task-board .task h4 {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.task-board .task p {
+  font-size: 14px;
+  color: #b9bbbe;
+}
+
+/* Create Task Box */
+.create-task-box input,
+.create-task-box textarea {
+  width: 100%;
+  background-color: #1e1f22;
+  color: white;
+  border: 1px solid #4e5058;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.create-task-box button {
+  background-color: #57f287;
+  color: #1e1f22;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.create-task-box button:hover {
+  background-color: #45c971;
+}
+
+/* Chat Preview */
+.chat-preview {
+  background-color: #1e1f22;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 6px;
+}
+
+.chat-preview h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+/* Project & Task Preview Cards */
+.projects-preview,
+.tasks-preview {
+  margin-top: 20px;
+}
+
+.preview-card {
+  background-color: #1e1f22;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.preview-card h4 {
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.preview-card p {
+  font-size: 14px;
+  color: #b9bbbe;
+}
+
+/* Chat Box & Message Box */
+.chat-box {
+  padding: 12px;
+  margin-bottom: 12px;
+  background-color: #2b2d31;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.chat-box:hover {
+  background-color: #3a3f47;
+}
+
+.chat-message {
+  margin-bottom: 8px;
+  color: #b9bbbe;
+  font-size: 14px;
+}
+
+.chat-message strong {
+  color: #ffffff;
+}
+
+.chat-messages {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.chat-messages input {
+  width: 100%;
+  padding: 10px;
+  background-color: #1e1f22;
+  color: white;
+  border: 1px solid #4e5058;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.chat-messages button {
+  background-color: #5865f2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.chat-messages button:hover {
+  background-color: #4752c4;
+}
+
+/* Admin-Only Chat Button */
+.create-chat-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.create-chat-button:hover {
+  background-color: #45a049;
+}
+
+/* Sidebar Divider */
+.group-sidebar hr {
+  margin: 15px 0;
+  border: 1px solid #1e1f22;
+}
+
+.chat-view {
+  background-color: #2b2d31;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 12px;
+}
+
+.chat-view::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-view::-webkit-scrollbar-thumb {
+  background-color: #5865f2;
+  border-radius: 4px;
+}
+
+.nav-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #7f7f7f;
+}
+
+.nav-button:disabled:hover {
+  background-color: #d6d6d6;
+}

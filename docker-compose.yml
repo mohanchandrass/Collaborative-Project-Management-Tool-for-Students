@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  vite:
+    build: .
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules  # Avoid overwriting node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm run dev -- --host
