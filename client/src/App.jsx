@@ -5,6 +5,7 @@ import { ProjectProvider } from './context/ProjectContext';
 import { TaskProvider } from './context/TaskContext';
 import MainLayout from './components/MainLayout';
 import ProjectDashboard from './components/dashboard/ProjectDashboard';
+import Home from './components/dashboard/Home';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import UserProfile from './components/UserProfile';
@@ -14,11 +15,11 @@ import Chat from './components/Chat';
 import TaskChart from './components/dashboard/TaskChart';
 import TaskStatus from './components/dashboard/TaskStatus';
 import UserDashboard from './components/dashboard/UserDashboard';
-import ChartGenerator from './components/dashboard/ChartGenerator'; 
+import ChartGenerator from './components/dashboard/ChartGenerator';
 import Calculator from './components/dashboard/Calculator';
 import Dictionary from './components/dashboard/Dictionary';
-import ReportGenerator from './components/dashboard/ReportGenerator'; // Ensure it's imported
 import './App.css';
+import ReportGenerator from './components/dashboard/ReportGenerator'; // Ensure it's imported
 
 class ErrorBoundary extends React.Component {
   state = { hasError: false };
@@ -80,6 +81,7 @@ function App() {
                 <Routes>
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
+                  <Route path="/home" element={<Home />} /> {/* Set /home as a direct route */}
 
                   <Route
                     path="/"
@@ -89,7 +91,7 @@ function App() {
                       </ProtectedRoute>
                     }
                   >
-                    <Route index element={<ProjectDashboard />} />
+                    <Route index element={<Navigate to="/home" replace />} /> {/* Redirect root to /home */}
                     <Route path="projects" element={<ProjectDashboard />} />
                     <Route path="projects/:projectId" element={<ProjectDashboard />} />
                     <Route path="userprofile" element={<UserProfile />} />
@@ -97,6 +99,8 @@ function App() {
                     <Route path="/chat" element={<Chat />} />
                     <Route path="group/:groupId" element={<GroupPage />} />
                     <Route path="/TaskStatus/:groupId" element={<TaskStatus />} />
+                    <Route path="/TaskStatus/:groupId/chart" element={<TaskChart />} />
+
                     <Route path="/chart/:groupId" element={<TaskChart />} />
                     <Route path="/dashboard" element={<UserDashboard />} />
                     <Route path="/chart-generator" element={<ChartGenerator />} />

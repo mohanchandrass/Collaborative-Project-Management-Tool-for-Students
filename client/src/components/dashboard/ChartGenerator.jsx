@@ -165,7 +165,9 @@ const ChartGenerator = () => {
 export default ChartGenerator;
 
 const styles = {
+  
   container: {
+    width: '100%',
     maxWidth: '800px',
     margin: '2rem auto',
     padding: '2rem',
@@ -174,7 +176,10 @@ const styles = {
     borderRadius: '12px',
     boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
     fontFamily: '"Segoe UI", sans-serif',
+    boxSizing: 'border-box',
   },
+  
+  
   heading: {
     fontSize: '2rem',
     marginBottom: '1.5rem',

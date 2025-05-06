@@ -230,6 +230,7 @@ const Chat = () => {
         </div>
 
         <div className="friend-request-section">
+        <hr />  
           <h4>Pending Requests</h4>
           {friendRequests.map(uid => (
             <div key={uid} className="request-item">
@@ -238,8 +239,8 @@ const Chat = () => {
             </div>
           ))}
         </div>
-
         <div className="friends-list">
+        <hr />  
           <h4>Your Friends</h4>
           {friends.map(friend => (
             <div
@@ -306,7 +307,37 @@ onKeyDown={handleKeyPress}
 </div>
 </>
 ) : (
-<div className="no-chat-selected">Select a friend to start chatting</div>
+<div className="no-chat-selected">
+  <div className="default-chat-landing">
+  <div className="chat-icon-glow">
+  <svg
+    width="64"
+    height="64"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="chat-icon-svg"
+  >
+    <path
+      d="M4 4H20V16H6L4 18V4Z"
+      stroke="#ffffff"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <circle cx="9" cy="10" r="1" fill="#ffffff" />
+    <circle cx="15" cy="10" r="1" fill="#ffffff" />
+  </svg>
+</div>
+
+    <h1>Welcome to Your Chat Space</h1>
+    <p className="subtitle">Start a conversation by selecting a friend or adding a new one.</p>
+    <div className="action-hints">
+      <span>👈 Add or select a friend to begin</span>
+      <span>➕ Add new friends using their username</span>
+    </div>
+  </div>
+</div>
 )}
 </div>
 </div>

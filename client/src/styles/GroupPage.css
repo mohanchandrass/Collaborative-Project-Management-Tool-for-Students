@@ -2,7 +2,7 @@
 .group-page-layout {
   display: flex;
   height: 100vh;
-  background-color: #313338;
+  background: linear-gradient(to bottom right, #2b2d31, #36393f);
   color: #ffffff;
   font-family: 'Segoe UI', sans-serif;
 }
@@ -10,24 +10,19 @@
 /* Left Sidebar */
 .group-sidebar {
   width: 260px;
-  background-color: #2b2d31;
+  background: linear-gradient(to bottom, #2b2d31, #33383f);
   padding: 20px;
   border-right: 1px solid #1e1f22;
   display: flex;
   flex-direction: column;
-}
-
-.group-sidebar h1 {
-  font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.4);
 }
 
 /* Settings Buttons */
 .settings-button,
 .leave-group-button,
 .delete-group-button {
-  background-color: #5865f2;
+  background: linear-gradient(to top, #5865f2, #4b58c5);
   color: white;
   font-size: 14px;
   padding: 10px;
@@ -35,23 +30,26 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out, transform 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .settings-button:hover,
 .leave-group-button:hover,
 .delete-group-button:hover {
-  background-color: #4752c4;
+  background: linear-gradient(to top, #4752c4, #3b46a6);
+  transform: scale(1.05);
 }
 
 /* Invite Code */
 .invite-code-box {
-  background-color: #1e1f22;
+  background: linear-gradient(to bottom, #1e1f22, #25272d);
   border: 1px dashed #5865f2;
   border-radius: 6px;
   padding: 10px;
   font-size: 14px;
   margin-top: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .invite-code-row {
@@ -83,24 +81,27 @@
 
 .group-settings input {
   padding: 10px;
-  background-color: #1e1f22;
+  background: linear-gradient(to bottom, #1e1f22, #25272d);
   color: white;
   border: 1px solid #4e5058;
   border-radius: 6px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .group-settings button {
-  background-color: #5865f2;
+  background: linear-gradient(to top, #5865f2, #4b58c5);
   color: white;
   border: none;
   border-radius: 6px;
   padding: 10px;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out, transform 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .group-settings button:hover {
-  background-color: #4752c4;
+  background: linear-gradient(to top, #4752c4, #3b46a6);
+  transform: scale(1.05);
 }
 
 /* Main Content */
@@ -108,16 +109,17 @@
   flex: 1;
   padding: 20px;
   overflow-y: auto;
-  background-color: #313338;
+  background: linear-gradient(to bottom right, #313338, #3b4047);
 }
 
 /* Right Sidebar (Members) */
 .group-members-panel {
   width: 280px;
-  background-color: #2b2d31;
+  background: linear-gradient(to bottom, #2b2d31, #33383f);
   padding: 20px;
   border-left: 1px solid #1e1f22;
   overflow-y: auto;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.4);
 }
 
 .group-members-panel h2 {
@@ -136,12 +138,13 @@
 }
 
 .member-card {
-  background-color: #1e1f22;
+  background: linear-gradient(to bottom, #1e1f22, #25272d);
   padding: 10px;
   border-radius: 6px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .member-info {
@@ -155,7 +158,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background-color: #5865f2;
+  background: linear-gradient(to bottom right, #5865f2, #4b58c5);
   color: white;
   font-weight: bold;
   display: flex;
@@ -191,26 +194,29 @@
 
 /* Leave/Delete Buttons */
 .leave-group-button {
-  background-color: #f04747;
+  background: linear-gradient(to top, #f04747, #c03e3e);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .leave-group-button:hover {
-  background-color: #d83c3e;
+  background: linear-gradient(to top, #d83c3e, #c03c3e);
 }
 
 .delete-group-button {
-  background-color: #ed4245;
+  background: linear-gradient(to top, #ed4245, #d93838);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .delete-group-button:hover {
-  background-color: #c03c3e;
+  background: linear-gradient(to top, #c03c3e, #a62d2d);
 }
 
 /* Dashboard + Tasks */
 .dashboard {
   padding: 20px;
-  background-color: #36393f;
+  background: linear-gradient(to bottom right, #36393f, #4f565d);
   border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 .dashboard h2 {
@@ -220,9 +226,10 @@
 
 .task-board {
   margin-top: 20px;
-  background-color: #2b2d31;
+  background: linear-gradient(to bottom, #2b2d31, #33383f);
   padding: 16px;
   border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
 }
 
 .task-board h3 {
@@ -232,10 +239,11 @@
 }
 
 .task-board .task {
-  background-color: #1e1f22;
+  background: linear-gradient(to bottom, #1e1f22, #25272d);
   padding: 12px;
   border-radius: 6px;
   margin-bottom: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .task-board .task h4 {
@@ -252,34 +260,37 @@
 .create-task-box input,
 .create-task-box textarea {
   width: 100%;
-  background-color: #1e1f22;
+  background: linear-gradient(to bottom, #1e1f22, #25272d);
   color: white;
   border: 1px solid #4e5058;
   border-radius: 6px;
   padding: 10px;
   margin-bottom: 10px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .create-task-box button {
-  background-color: #57f287;
+  background: linear-gradient(to top, #57f287, #45c971);
   color: #1e1f22;
   border: none;
   padding: 10px;
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .create-task-box button:hover {
-  background-color: #45c971;
+  background: linear-gradient(to top, #45c971, #38b55e);
 }
 
 /* Chat Preview */
 .chat-preview {
-  background-color: #1e1f22;
+  background: linear-gradient(to bottom, #1e1f22, #25272d);
   padding: 10px;
   margin-top: 20px;
   border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .chat-preview h3 {
@@ -294,11 +305,11 @@
 }
 
 .preview-card {
-  background-color: #1e1f22;
+  background: linear-gradient(to bottom, #1e1f22, #25272d);
   border-radius: 8px;
   padding: 12px;
   margin-bottom: 10px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .preview-card h4 {
@@ -315,14 +326,15 @@
 .chat-box {
   padding: 12px;
   margin-bottom: 12px;
-  background-color: #2b2d31;
+  background: linear-gradient(to bottom, #2b2d31, #33383f);
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .chat-box:hover {
-  background-color: #3a3f47;
+  background: linear-gradient(to bottom, #3a3f47, #444c54);
 }
 
 .chat-message {
@@ -342,40 +354,43 @@
 .chat-messages input {
   width: 100%;
   padding: 10px;
-  background-color: #1e1f22;
+  background: linear-gradient(to bottom, #1e1f22, #25272d);
   color: white;
   border: 1px solid #4e5058;
   border-radius: 6px;
   margin-bottom: 10px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .chat-messages button {
-  background-color: #5865f2;
+  background: linear-gradient(to top, #5865f2, #4b58c5);
   color: white;
   border: none;
   border-radius: 6px;
   padding: 10px;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .chat-messages button:hover {
-  background-color: #4752c4;
+  background: linear-gradient(to top, #4752c4, #3b46a6);
 }
 
 /* Admin-Only Chat Button */
 .create-chat-button {
-  background-color: #4CAF50;
+  background: linear-gradient(to top, #4CAF50, #45a049);
   color: white;
   border: none;
   padding: 8px 16px;
   margin: 10px 0;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .create-chat-button:hover {
-  background-color: #45a049;
+  background: linear-gradient(to top, #45a049, #399f44);
 }
 
 /* Sidebar Divider */
@@ -385,7 +400,7 @@
 }
 
 .chat-view {
-  background-color: #2b2d31;
+  background: linear-gradient(to bottom, #2b2d31, #33383f);
   padding: 20px;
   border-radius: 8px;
   margin-top: 20px;
@@ -393,6 +408,7 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
 }
 
 .chat-messages {
@@ -419,3 +435,12 @@
 .nav-button:disabled:hover {
   background-color: #d6d6d6;
 }
+
+.group-sidebar button.active {
+  background: linear-gradient(to bottom, #3b4047, #2b2d31); /* Darker gradient similar to the sidebar background */
+  color: #ffffff; /* White text */
+  transform: scale(1.05); /* Slight scale effect for emphasis */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+  border-left: 4px solid #5865f2; /* Soft blue border to match theme */
+}
+

@@ -147,3 +147,40 @@
     font-size: 16px;
     font-style: italic;
 }
+
+.no-chat-selected {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    background: linear-gradient(to right, #23272a, #2c2f33);
+    color: #ffffff;
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .default-chat-info {
+    max-width: 500px;
+  }
+  
+  .chat-illustration {
+    width: 200px;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+  }
+  
+  .default-chat-info h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .default-chat-info p {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .subtext {
+    font-size: 0.9rem;
+    color: #bbbbbb;
+  }
+  

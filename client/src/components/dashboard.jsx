@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react'; 
 import { Link } from 'react-router-dom';
 import { firestore } from '../firebase';
 import { AuthContext } from '../context/AuthContext';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { FaCalculator, FaChartLine, FaBook, FaFileAlt} from 'react-icons/fa';
+import { FaFolder, FaUsers, FaCheckSquare, FaFileAlt, FaTasks } from 'react-icons/fa';
 import '../styles/Dashboard.css';
 
-const Dashboard = () => {
+const Dashboard = ({ setActiveTab }) => {
   const { currentUser } = useContext(AuthContext);
   const [projects, setProjects] = useState([]);
   const [currentSprint, setCurrentSprint] = useState(null);
@@ -142,34 +142,45 @@ const Dashboard = () => {
           </section>
         )}
 
-        <section className="dashboard-card tools-card">
-          <h2>Quick Tools</h2>
+        <section className="dashboard-card quick-access-card">
+          <h2>Quick Access</h2>
           <div className="tools-grid">
-            <Link to="/calculator" className="tool-button">
-              <div className="tool-icon">
-                <FaCalculator size={24} />
-              </div>
-              <span>Calculator</span>
-            </Link>
-            <Link to="/chart-generator" className="tool-button">
-              <div className="tool-icon">
-                <FaChartLine size={24} />
-              </div>
-              <span>Generate Chart</span>
-            </Link>
-            <Link to="/dictionary" className="tool-button">
-              <div className="tool-icon">
-                <FaBook size={24} />
-              </div>
-              <span>Dictionary</span>
-            </Link>
-            <Link to="/report-generator" className="tool-button">
-              <div className="tool-icon">
-                <FaFileAlt size={24} />
-              </div>
-              <span>Report Generator</span>
-            </Link>
-          </div>
+  <button className="tool-button" onClick={() => setActiveTab('my-projects')}>
+    <div className="tool-icon">
+      <FaFolder size={24} />
+    </div>
+    <span>All Projects</span>
+  </button>
+
+  <button className="tool-button" onClick={() => setActiveTab('group-chat')}>
+    <div className="tool-icon">
+      <FaUsers size={24} />
+    </div>
+    <span>Group Chat</span>
+  </button>
+
+  <button className="tool-button" onClick={() => setActiveTab('task-status')}>
+    <div className="tool-icon">
+      <FaCheckSquare size={24} />
+    </div>
+    <span>Task Status</span>
+  </button>
+
+  <button className="tool-button" onClick={() => setActiveTab('new-project')}>
+    <div className="tool-icon">
+      <FaTasks size={24} />
+    </div>
+    <span>Generate Product Backlog</span>
+  </button>
+
+  <Link to="/report-generator" className="tool-button">
+                <div className="tool-icon">
+                  <FaFileAlt size={24} />
+                </div>
+                <span>Report Generator</span>
+              </Link>
+</div>
+
         </section>
       </div>
     </div>

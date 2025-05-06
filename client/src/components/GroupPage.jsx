@@ -26,7 +26,7 @@ import {
   FiCheckSquare
 } from 'react-icons/fi';
 import '../styles/GroupPage.css';
-import Dashboard from './Dashboard';
+import Dashboard from './dashboard';
 import NewProjects from './dashboard/NewProjects';
 import MyProjects from './dashboard/MyProjects';
 import TaskStatus from './dashboard/TaskStatus';
@@ -92,7 +92,7 @@ const GroupPage = () => {
       case 'task-status':
         return <TaskStatus groupId={groupId} />;
       default:
-        return <Dashboard groupId={groupId} />;
+        return <Dashboard groupId={groupId} setActiveTab={setActiveTab} />;
     }
   };
 
@@ -140,45 +140,55 @@ const GroupPage = () => {
   };
 
   const handleLeaveGroup = async () => {
+    const currentUser = auth.currentUser; // Get the current user from auth
+    if (!currentUser || !currentUser.uid) {
+      alert('User data not loaded properly.');
+      return;
+    }
+  
     try {
       if (!group) return;
-
+  
       const confirmed = window.confirm('Are you sure you want to leave this group?');
       if (!confirmed) return;
-
+  
       const groupRef = doc(firestore, 'groups', groupId);
       const isOnlyMember = group.members.length === 1;
       const isAdmin = group.admin === currentUser.uid;
-
+  
       if (isOnlyMember) {
         await deleteDoc(groupRef);
         alert('Group deleted because you were the only member.');
-        navigate('/');
+  
+        // Navigate to user dashboard after deletion
+        navigate('/dashboard');
         return;
       }
-
+  
       if (isAdmin) {
         const remainingMembers = group.members.filter((id) => id !== currentUser.uid);
         const newAdmin = remainingMembers[0];
-
+  
         await updateDoc(groupRef, {
           admin: newAdmin,
           members: arrayRemove(currentUser.uid),
         });
-
+  
         alert(`You left the group. Admin rights transferred to another member.`);
       } else {
         await updateDoc(groupRef, {
           members: arrayRemove(currentUser.uid),
         });
       }
-
-      navigate('/');
+  
+      // Navigate to user dashboard after leaving group
+      navigate('/dashboard');
     } catch (err) {
       alert('Error leaving group');
       console.error(err);
     }
   };
+  
 
   const handleDeleteGroup = async () => {
     const confirmed = window.confirm('Are you sure you want to delete this group? This cannot be undone.');

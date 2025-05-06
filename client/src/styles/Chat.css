@@ -151,6 +151,7 @@
 
 /* Chat Messages */
 .chat-messages {
+  max-height: none;
   flex-grow: 1;
   padding: 24px;
   overflow-y: auto;
@@ -285,4 +286,89 @@
   bottom: 4px; /* Position it at the bottom */
   right: 8px;
   padding-top: 4px; /* Ensure the timestamp is spaced from the message */
+}
+
+hr {
+  margin: 15px 0;
+  border: 1px solid  #000000;
+}
+
+.friends-list hr {
+  margin: 15px 0;
+  border: 1px solid #1e1f22;
+}
+
+.friend-request-section hr{
+  margin: 15px 0;
+  border: 1px solid #1e1f22;
+}
+
+.no-chat-selected {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+  background: linear-gradient(to right, #2c2f33, #23272a);
+  color: #ffffff;
+  padding: 2rem;
+  text-align: center;
+}
+
+.default-chat-landing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  animation: fadeIn 0.8s ease-in-out;
+  max-width: 600px;
+}
+
+.chat-icon-glow {
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, #5865f2 0%, #3a3f54 70%);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 25px #5865f2aa;
+  animation: pulse 2s infinite;
+}
+
+.chat-icon-svg {
+  width: 48px;
+  height: 48px;
+}
+
+
+.default-chat-landing h1 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #cccccc;
+}
+
+.action-hints {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #aaaaaa;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  opacity: 0.9;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 20px #5865f2aa; }
+  50% { box-shadow: 0 0 30px #5865f2ff; }
+  100% { box-shadow: 0 0 20px #5865f2aa; }
 }

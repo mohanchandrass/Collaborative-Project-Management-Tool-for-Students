@@ -20,13 +20,17 @@ const Login = () => {
     try {
       await login(email.trim(), password.trim());
       alert('✅ Successfully logged in!');
-      navigate('/');
+      navigate('/dashboard'); // Redirect to /dashboard upon successful login
     } catch (err) {
       console.error("Login Error:", err);
       setError(err.message || 'Invalid email or password');
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGoBack = () => {
+    navigate('/home'); // Redirect to /home when the back button is clicked
   };
 
   return (
@@ -61,7 +65,9 @@ const Login = () => {
           Register
         </Link>
       </p>
+      
     </div>
+    
   );
 };
 

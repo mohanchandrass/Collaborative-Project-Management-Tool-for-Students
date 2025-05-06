@@ -9,15 +9,15 @@ import '../../styles/TaskStatus.css';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const TaskChart = () => {
-  const { groupId } = useParams(); // ✅ Get groupId from URL
-  const navigate = useNavigate(); // ✅ For programmatic navigation
+  const { groupId } = useParams();
+  const navigate = useNavigate();
   const [taskCounts, setTaskCounts] = useState({ toDo: 0, inProgress: 0, completed: 0 });
 
   useEffect(() => {
     if (!groupId) return;
 
     const unsubscribe = onSnapshot(
-      collection(firestore, 'groups', groupId, 'tasks'), // ✅ Correct path inside group
+      collection(firestore, 'groups', groupId, 'tasks'),
       (snapshot) => {
         let counts = { toDo: 0, inProgress: 0, completed: 0 };
 
@@ -55,8 +55,8 @@ const TaskChart = () => {
         <Pie data={chartData} />
       </div>
       <br />
-      <button className="back-button" onClick={() => navigate(`/TaskStatus/${groupId}`)}>
-        Back to Task Manager
+      <button className="back-button" onClick={() => navigate('/dashboard')}>
+        Back to Dashboard
       </button>
     </div>
   );
