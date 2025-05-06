@@ -7,14 +7,14 @@ Welcome to the **Collaborative Project Management Tool for Students**! This app 
 
 ## Table of Contents
 
-- [💡 Features](#features)
-- [🖥️ Technologies Used](#technologies-used)
-- [🚀 Getting Started](#getting-started)
-- [🌟 Features Walkthrough](#features-walkthrough)
-- [🛠️ Contributing](#contributing)
-- [📄 License](#license)
-- [📬 Contact](#contact)
-- [🚧 Roadmap](#roadmap)
+- [💡 Features](#💡-features)
+- [🖥️ Technologies Used](#🖥️-technologies-used)
+- [🚀 Getting Started](#🚀-getting-started)
+- [🌟 Features Walkthrough](#🌟-features-walkthrough)
+- [🛠️ Contributing](#🛠️-contributing)
+- [📄 License](#📄-license)
+- [📬 Contact](#📬-contact)
+- [🚧 Roadmap](#🚧-roadmap)
 
 ---
 
