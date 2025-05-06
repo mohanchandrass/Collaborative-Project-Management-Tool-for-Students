@@ -7,7 +7,7 @@ import { onSnapshot, doc, collection, addDoc, query, where, getDocs, updateDoc, 
 import { onAuthStateChanged } from 'firebase/auth';
 import UserProfile from '../components/UserProfile';
 import Chat from '../components/Chat';
-import '../styles/Sidebar.css';
+import '../styles/sidebar.css';
 import logo from '../assets/logo.png'; // Adjust the path to your image location
 
 const statusIcons = {
