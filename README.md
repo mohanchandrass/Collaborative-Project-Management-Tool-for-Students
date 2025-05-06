@@ -5,6 +5,19 @@ Welcome to the **Collaborative Project Management Tool for Students**! This app 
 
 ---
 
+## Table of Contents
+
+- [💡 Features](#features)
+- [🖥️ Technologies Used](#technologies-used)
+- [🚀 Getting Started](#getting-started)
+- [🌟 Features Walkthrough](#features-walkthrough)
+- [🛠️ Contributing](#contributing)
+- [📄 License](#license)
+- [📬 Contact](#contact)
+- [🚧 Roadmap](#roadmap)
+
+---
+
 ## 💡 Features
 
 ✨ **Task Management**: Create, assign, and track tasks in real-time.  
@@ -85,21 +98,6 @@ Stay connected with your team via **Group Chat**! Create a group chat, send mess
 - **Create Chat**: Start a new chat for your group.
 - **Leave Group**: Easily leave any chat if you no longer need it.
 
-### 🔔 Notifications
-
-Never miss an important update! Receive notifications about task deadlines, new messages, and project changes in real-time.
-
----
-
-## 🎨 Aesthetic Design
-
-The app uses **Material UI** for a clean, modern design. The layout is **responsive**, ensuring it looks great on both desktop and mobile devices.
-
-- **Minimalist Dashboard**: Focus on what's important without distractions.
-- **Interactive Charts**: Visualize your project's progress with ease.
-- **Real-time Updates**: Stay in the loop without constantly refreshing.
-
----
 
 ## 🛠️ Contributing
 
