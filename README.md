@@ -5,6 +5,15 @@ Welcome to the **Collaborative Project Management Tool for Students**! This app 
 
 ---
 
+## Team Members
+Mohan Chandra S S
+Prabhat M 
+Likith S G
+Nithin S 
+Karthik S M
+
+---
+
 ## Table of Contents
 
 - [💡 Features](#💡-features)
@@ -120,7 +129,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you have any questions, feel free to reach out!
 
-- **Email**: [mohanshivaiah24@gmail.com](mailto:mohanshivaiah24@gmail.com)
 - **GitHub**: [https://github.com/mohanchandrass](https://github.com/mohanchandrass)
 
 ---
