@@ -1,5 +1,5 @@
 
-# Collaborative Project Management Tool for Students🚀
+# 🚀Collaborative Project Management Tool for Students
 
 Welcome to the **Collaborative Project Management Tool for Students**! This app helps students and project teams seamlessly collaborate, manage tasks, track progress, and communicate in one place. Whether you're working on a class project or a team initiative, this tool is your go-to for organization and productivity.
 
