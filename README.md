@@ -6,11 +6,11 @@ Welcome to the **Collaborative Project Management Tool for Students**! This app 
 ---
 
 ## Team Members
-Mohan Chandra S S
-Prabhat M 
-Likith S G
-Nithin S 
-Karthik S M
+- Mohan Chandra S S
+- Prabhat M 
+- Likith S G
+- Nithin S 
+- Karthik S M
 
 ---
 
