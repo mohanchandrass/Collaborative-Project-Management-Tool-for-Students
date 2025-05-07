@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react'; 
-import { Link } from 'react-router-dom';
-import { firestore } from '../firebase';
-import { AuthContext } from '../context/AuthContext';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import React, { useState, useEffect } from 'react';    
+import { Link, useNavigate } from 'react-router-dom';
+import { firestore, auth } from '../firebase'; // Import auth from firebase
+import { collection, getDocs, query, where, doc, getDoc } from 'firebase/firestore';
 import { FaFolder, FaUsers, FaCheckSquare, FaFileAlt, FaTasks } from 'react-icons/fa';
 import '../styles/Dashboard.css';
+import * as XLSX from 'xlsx';
 
-const Dashboard = ({ setActiveTab }) => {
-  const { currentUser } = useContext(AuthContext);
+const Dashboard = ({ groupId, setActiveTab }) => {
+  const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [currentSprint, setCurrentSprint] = useState(null);
   const [taskCounts, setTaskCounts] = useState({
@@ -15,10 +15,19 @@ const Dashboard = ({ setActiveTab }) => {
     inProgress: 0,
     completed: 0,
   });
+  const [members, setMembers] = useState([]);
 
+  // Fetch user projects
   useEffect(() => {
     const fetchProjects = async () => {
       try {
+        const currentUser = auth.currentUser;
+        if (!currentUser) {
+          console.error("User is not logged in.");
+          navigate("/login"); // Redirect to login page if the user is not authenticated
+          return;
+        }
+
         const q = query(collection(firestore, 'projects'), where('userId', '==', currentUser.uid));
         const querySnapshot = await getDocs(q);
         const userProjects = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -28,25 +37,26 @@ const Dashboard = ({ setActiveTab }) => {
       }
     };
 
-    if (currentUser) fetchProjects();
-  }, [currentUser]);
+    fetchProjects();
+  }, [navigate]);
 
+  // Fetch sprint details and task counts
   useEffect(() => {
     const fetchSprintDetails = async () => {
       try {
         const sprintSnapshot = await getDocs(collection(firestore, 'sprints'));
         const activeSprint = sprintSnapshot.docs.find(doc => doc.data().status === 'active');
-        
+
         if (activeSprint) {
           const sprintData = activeSprint.data();
           const counts = { toDo: 0, inProgress: 0, completed: 0 };
-          
+
           sprintData.tasks?.forEach(task => {
             if (task.status === 'To Do') counts.toDo++;
             if (task.status === 'In Progress') counts.inProgress++;
             if (task.status === 'Completed') counts.completed++;
           });
-          
+
           setCurrentSprint(sprintData);
           setTaskCounts(counts);
         }
@@ -56,7 +66,106 @@ const Dashboard = ({ setActiveTab }) => {
     };
 
     fetchSprintDetails();
-  }, [currentUser]);
+  }, []);
+
+  // Fetch members of the group
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const groupRef = doc(firestore, 'groups', groupId);
+        const groupSnap = await getDoc(groupRef);
+        if (groupSnap.exists()) {
+          const groupData = groupSnap.data();
+          if (groupData.members && Array.isArray(groupData.members)) {
+            const fetchedMembers = await Promise.all(
+              groupData.members.map(async (memberId) => {
+                const userRef = doc(firestore, 'users', memberId);
+                const userSnap = await getDoc(userRef);
+                if (userSnap.exists()) {
+                  const userData = userSnap.data();
+                  return {
+                    id: memberId,
+                    displayName: userData.displayName || userData.username || userData.email || 'Unnamed',
+                  };
+                }
+                return null;
+              })
+            );
+            setMembers(fetchedMembers.filter(Boolean));
+          }
+        }
+      } catch (err) {
+        console.error('Failed to fetch group members:', err);
+      }
+    };
+    fetchMembers();
+  }, [groupId]);
+
+  // Export backlog to Excel
+  const exportBacklogToExcel = async () => {
+    try {
+      if (!groupId) {
+        console.error("Group ID is not available.");
+        return;
+      }
+
+      const tasksRef = collection(firestore, 'groups', groupId, 'tasks');
+      const projectRef = collection(firestore, 'groups', groupId, 'projects');
+
+      // Fetch tasks for the group
+      const taskSnapshot = await getDocs(tasksRef);
+      const tasks = taskSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+      // Fetch projects for the group
+      const projectSnapshot = await getDocs(projectRef);
+      const projects = projectSnapshot.docs.map(doc => doc.data().name);
+
+      if (!tasks.length) {
+        alert("No tasks available to export.");
+        return;
+      }
+
+      const memberMap = {}; // Map user ID to display name
+      members.forEach(member => {
+        memberMap[member.id] = member.displayName;
+      });
+
+      // Create a workbook instance
+      const workbook = XLSX.utils.book_new();
+
+      // Group tasks by project name
+      const groupedTasks = tasks.reduce((acc, task) => {
+        const projectName = task.projectName || 'Unnamed Project';
+        if (!acc[projectName]) {
+          acc[projectName] = [];
+        }
+        acc[projectName].push({
+          Name: task.name || '',
+          Status: task.status || '',
+          AssignedTo: memberMap[task.assignedTo] || '',
+          UserStory: task.userStory || '',
+          'Story Points': typeof task.points === 'number' ? task.points : 0,
+        });
+        return acc;
+      }, {});
+
+      // Add a sheet for each project
+      Object.keys(groupedTasks).forEach(projectName => {
+        const tasksForProject = groupedTasks[projectName];
+        const worksheet = XLSX.utils.json_to_sheet(tasksForProject);
+        // Add the worksheet with the project name as the sheet name
+        XLSX.utils.book_append_sheet(workbook, worksheet, projectName.substring(0, 31)); // Sheet name max length 31
+      });
+
+      const currentDate = new Date().toISOString().split('T')[0];
+      const filename = `Product_Backlog_By_Project_${currentDate}.xlsx`;
+
+      // Export the workbook to a file
+      XLSX.writeFile(workbook, filename);
+    } catch (error) {
+      console.error('Error exporting backlog:', error);
+    }
+  };
 
   return (
     <div className="dashboard">
@@ -145,42 +254,44 @@ const Dashboard = ({ setActiveTab }) => {
         <section className="dashboard-card quick-access-card">
           <h2>Quick Access</h2>
           <div className="tools-grid">
-  <button className="tool-button" onClick={() => setActiveTab('my-projects')}>
-    <div className="tool-icon">
-      <FaFolder size={24} />
-    </div>
-    <span>All Projects</span>
-  </button>
+            <button className="tool-button" onClick={() => setActiveTab('my-projects')}>
+              <div className="tool-icon">
+                <FaFolder size={24} />
+              </div>
+              <span>All Projects</span>
+            </button>
 
-  <button className="tool-button" onClick={() => setActiveTab('group-chat')}>
-    <div className="tool-icon">
-      <FaUsers size={24} />
-    </div>
-    <span>Group Chat</span>
-  </button>
+            <button className="tool-button" onClick={() => setActiveTab('group-chat')}>
+              <div className="tool-icon">
+                <FaUsers size={24} />
+              </div>
+              <span>Group Chat</span>
+            </button>
 
-  <button className="tool-button" onClick={() => setActiveTab('task-status')}>
-    <div className="tool-icon">
-      <FaCheckSquare size={24} />
-    </div>
-    <span>Task Status</span>
-  </button>
+            <button className="tool-button" onClick={() => setActiveTab('task-status')}>
+              <div className="tool-icon">
+                <FaCheckSquare size={24} />
+              </div>
+              <span>Task Status</span>
+            </button>
 
-  <button className="tool-button" onClick={() => setActiveTab('new-project')}>
-    <div className="tool-icon">
-      <FaTasks size={24} />
-    </div>
-    <span>Generate Product Backlog</span>
-  </button>
+            <button
+              className="tool-button"
+              onClick={exportBacklogToExcel}
+            >
+              <div className="tool-icon">
+                <FaTasks size={24} />
+              </div>
+              <span>Generate Product Backlog</span>
+            </button>
 
-  <Link to="/report-generator" className="tool-button">
-                <div className="tool-icon">
-                  <FaFileAlt size={24} />
-                </div>
-                <span>Report Generator</span>
-              </Link>
-</div>
-
+            <Link to="/report-generator" className="tool-button">
+              <div className="tool-icon">
+                <FaFileAlt size={24} />
+              </div>
+              <span>Report Generator</span>
+            </Link>
+          </div>
         </section>
       </div>
     </div>
