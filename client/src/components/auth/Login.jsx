@@ -65,6 +65,13 @@ const Login = () => {
           Register
         </Link>
       </p>
+
+      <p>
+        Back To Home?{' '}
+        <Link to="/home" style={{ color: 'Gray' }}>
+        ⬅️
+        </Link>
+      </p>
       
     </div>
     
