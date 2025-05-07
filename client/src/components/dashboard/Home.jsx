@@ -30,7 +30,7 @@ const ProjectDashboard = () => {
   const homeRef = useRef(null);
 
   const handleSignInClick = () => {
-    navigate('/register');
+    navigate('/login');
   };
 
   const scrollToSection = (ref) => {
@@ -48,7 +48,7 @@ const ProjectDashboard = () => {
             <button onClick={() => scrollToSection(benefitsRef)} style={vexStyles.navLinkButton}>Benefits</button>
             <button onClick={() => scrollToSection(contactRef)} style={vexStyles.navLinkButton}>Contact</button>
           </nav>
-          <button onClick={handleSignInClick} style={vexStyles.signInButton}>Sign In</button>
+          <button onClick={handleSignInClick} style={vexStyles.signInButton}>Sign-In</button>
         </header>
         <main style={vexStyles.hero} id="home" ref={homeRef}>
           <div style={vexStyles.heroContent}>
