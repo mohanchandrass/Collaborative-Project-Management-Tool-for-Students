@@ -12,6 +12,7 @@ import {
 import { Pie, Bar } from 'react-chartjs-2';
 import { ProjectContext } from '../../context/ProjectContext';
 import { TaskContext } from '../../context/TaskContext';
+import logo from './logo.png';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title);
 import { useNavigate } from 'react-router-dom';
@@ -58,7 +59,7 @@ const ProjectDashboard = () => {
           </div>
           {/* Placeholder for the image */}
           <div style={vexStyles.heroImagePlaceholder}>
-  <img src="/logo.png" alt="Logo" style={{ width: '80%', height: 'auto', objectFit: 'contain' }} />
+    <img src={logo} alt="Logo" style={{ width: '80%', height: 'auto', objectFit: 'contain' }} />
 </div>
 
         </main>
