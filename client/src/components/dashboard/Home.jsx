@@ -1,6 +1,4 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-<<<<<<< HEAD
-=======
 import {
   Chart as ChartJS,
   ArcElement,
@@ -17,7 +15,6 @@ import { TaskContext } from '../../context/TaskContext';
 import logo from './logo.png';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title);
->>>>>>> bb2b9e030f8743d4fadb329bd818f472e1c185ad
 import { useNavigate } from 'react-router-dom';
 import backgroundVideo from '../../assets/background3.mp4';
 
@@ -104,7 +101,6 @@ const ProjectDashboard = () => {
     }
 
     return (
-<<<<<<< HEAD
         <div style={vexStyles.container}>
             <header ref={headerRef} style={{ ...vexStyles.header, ...(isSticky ? vexStyles.headerSticky : {}) }}>
                 <h1 style={{ ...vexStyles.logoAnimated, fontSize: '3rem' }}>ProjectHub</h1> {/* Increased logo size */}
@@ -124,28 +120,6 @@ const ProjectDashboard = () => {
                 </div>
                 <div style={vexStyles.heroImagePlaceholder}>
   <img src="/logo.png" alt="Logo" style={{ width: '80%', height: 'auto', objectFit: 'contain' }} />
-=======
-      <div style={vexStyles.container}>
-        <header style={vexStyles.header}>
-          <h1 style={vexStyles.logo}>ProjectHub</h1>
-          <nav style={vexStyles.nav}>
-            <button onClick={() => scrollToSection(homeRef)} style={vexStyles.navLinkButton}>Home</button>
-            <button onClick={() => scrollToSection(featuresRef)} style={vexStyles.navLinkButton}>Features</button>
-            <button onClick={() => scrollToSection(benefitsRef)} style={vexStyles.navLinkButton}>Benefits</button>
-            <button onClick={() => scrollToSection(contactRef)} style={vexStyles.navLinkButton}>Contact</button>
-          </nav>
-          <button onClick={handleSignInClick} style={vexStyles.signInButton}>Sign-In</button>
-        </header>
-        <main style={vexStyles.hero} id="home" ref={homeRef}>
-          <div style={vexStyles.heroContent}>
-            <h2 style={vexStyles.heroTitle}>Power Your Projects<br />with Our App.</h2>
-            <p style={vexStyles.heroSubtitle}>Take control of your projects and stay on top of your goals with our intuitive project management app. Say goodbye to chaos and hello to streamlined efficiency. Try it now and experience the difference.</p>
-            <button style={vexStyles.manageProjectButton}>Manage a New Project</button>
-          </div>
-          {/* Placeholder for the image */}
-          <div style={vexStyles.heroImagePlaceholder}>
-    <img src={logo} alt="Logo" style={{ width: '80%', height: 'auto', objectFit: 'contain' }} />
->>>>>>> bb2b9e030f8743d4fadb329bd818f472e1c185ad
 </div>
             </main>
 
@@ -461,30 +435,10 @@ const vexStyles = {
         '0%': { backgroundPosition: '0% 50%' },
         '100%': { backgroundPosition: '100% 50%' },
     },
-<<<<<<< HEAD
+
+    
+
 };
-=======
-  },
-  submitButton: {
-    backgroundColor: '#64ffda',
-    color: '#0a192f',
-    border: 'none',
-    borderRadius: '5px',
-    padding: '15px 30px',
-    fontSize: '1.1rem',
-    fontWeight: 'bold',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s ease',
-  },
-  submitButtonHover: {
-    backgroundColor: '#54e6da',
-  },
-  footer: {
-    textAlign: 'center',
-    padding: '30px 0',
-    color: '#a8b2d1',
-    fontSize: '0.9rem',
-    backgroundColor: '#233554',
-},
-};
->>>>>>> bb2b9e030f8743d4fadb329bd818f472e1c185ad
+
+ 
+

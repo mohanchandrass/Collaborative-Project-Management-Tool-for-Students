@@ -3,7 +3,6 @@ import { AuthContext } from "../../context/AuthContext";
 import { Link, useNavigate } from 'react-router-dom';
 import "../../styles/AuthForm.css";
 import logo from '../../assets/logo.png'; // Import your logo image
-import videoBg from '../../styles/background.mp4'; // Import the video file
 
 const Login = () => {
   const { login } = useContext(AuthContext);

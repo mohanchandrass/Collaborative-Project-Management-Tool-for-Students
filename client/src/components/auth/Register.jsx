@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { firestore } from '../../firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import "../../styles/AuthForm.css";
-import videoBg from '../../styles/background.mp4';
 import logo from '../../assets/logo.png'; // Import your logo image
 
 const Register = () => {
