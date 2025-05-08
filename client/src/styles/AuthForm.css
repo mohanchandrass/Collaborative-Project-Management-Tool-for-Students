@@ -3,10 +3,10 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(-45deg, #000000, #4d4d4d, #999999, #ffffff, #999999, #4d4d4d, #000000);
+  background: linear-gradient(-45deg, #1a1a40, #2a0f5c, #4b0082, #5e1ca5, #6a11cb, #3e3a9f, #1a1a40);
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
-  height: 100vh;
+  height: 100vh; /* Using vh for full viewport height */
   overflow: hidden;
 }
 
@@ -17,43 +17,70 @@ body {
 }
 
 .auth-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #ffffff; /* Solid white background */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  z-index: 10;
+}
+
+.video-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.video-bg-fullscreen {
+  /* Already covered by .video-bg */
+}
+
+.auth-content {
+  background: #ffffff;
   border: none;
-  padding: 40px;
-  width: 90%;
-  max-width: 400px;
-  border-radius: 20px;
-  color: #333; /* Dark text */
-  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+  padding: 40px; /* Standard pixel padding */
+  width: 90%; /* Using percentage for responsiveness within a reasonable range */
+  max-width: 400px; /* Maintaining a maximum width */
+  border-radius: 20px; /* Standard pixel border-radius */
+  color: #555;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2); /* Standard pixel box-shadow */
+  z-index: 2;
 }
 
 .app-name {
-  font-size: 1.8rem;
+  font-size: 1.8em; /* Using em for relative font sizing */
   font-weight: bold;
-  color: #222;
-  margin-bottom: 10px;
+  color: #ffffff;
+  margin-bottom: 10px; /* Standard pixel margin */
   text-align: center;
 }
 
 .auth-container h2 {
   text-align: center;
-  margin-bottom: 20px;
-  color: #333;
+  margin-bottom: 20px; /* Standard pixel margin */
+  color: rgb(72, 7, 90);
+  font-size: 1.5em; /* Using em for relative font sizing */
 }
 
 .auth-container input {
   width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
+  padding: 12px; /* Standard pixel padding */
+  margin-bottom: 15px; /* Standard pixel margin */
   background: #f0f0f0;
   border: 1px solid #ccc;
-  border-radius: 10px;
+  border-radius: 10px; /* Standard pixel border-radius */
   color: #333;
   outline: none;
+  font-size: 1em; /* Using em for relative font sizing */
   transition: background 0.3s ease;
 }
 
@@ -63,27 +90,47 @@ body {
 
 .auth-container button {
   width: 100%;
-  padding: 12px;
-  background: #000000;
+  padding: 12px; /* Standard pixel padding */
+  background: linear-gradient(to right, #8e2de2, #4a00e0);
   border: none;
-  border-radius: 10px;
+  border-radius: 10px; /* Standard pixel border-radius */
   color: #fff;
   font-weight: bold;
   cursor: pointer;
+  font-size: 1.1em; /* Using em for relative font sizing */
   transition: background 0.3s ease;
 }
 
 .auth-container button:hover {
-  background: rgb(172, 172, 172);
+  background: linear-gradient(to right, #a851f0, #6a1bff);
+  color: white;
 }
 
 .auth-container p {
   text-align: center;
-  margin-top: 10px;
+  margin-top: 10px; /* Standard pixel margin */
   color: #d9534f;
+  font-size: 1em; /* Using em for relative font sizing */
 }
 
 .auth-container a {
-  color: #00c6ff;
+  color: #6c63ff;
   text-decoration: none;
+}
+
+.back-button-text {
+  background: none;
+  border: none;
+  color: #777;
+  cursor: pointer;
+  margin-top: 10px; /* Standard pixel margin */
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 5px 0; /* Standard pixel padding */
+  font-size: 1em; /* Using em for relative font sizing */
+}
+
+.back-button-text:hover {
+  color: #555;
 }

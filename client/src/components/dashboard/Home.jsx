@@ -1,490 +1,422 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-} from 'chart.js';
-import { Pie, Bar } from 'react-chartjs-2';
-import { ProjectContext } from '../../context/ProjectContext';
-import { TaskContext } from '../../context/TaskContext';
-
-ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title);
 import { useNavigate } from 'react-router-dom';
+import backgroundVideo from '../../assets/background3.mp4';
 
 const ProjectDashboard = () => {
-  const { currentProject } = useContext(ProjectContext);
-  const { tasks } = useContext(TaskContext);
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const [agileNotes, setAgileNotes] = useState('');
-  const [savedNotes, setSavedNotes] = useState([]);
+    const [circleRadius, setCircleRadius] = useState(0);
+    const [rotation, setRotation] = useState(0);
+    const [isSticky, setIsSticky] = useState(false);
 
-  const featuresRef = useRef(null);
-  const benefitsRef = useRef(null);
-  const contactRef = useRef(null);
-  const homeRef = useRef(null);
+    const homeRef = useRef(null);
+    const featuresRef = useRef(null);
+    const dashboardRef = useRef(null);
+    const benefitsRef = useRef(null);
+    const headerRef = useRef(null);
 
-  const handleSignInClick = () => {
-    navigate('/login');
-  };
+    const handleSignInClick = () => {
+        navigate('/login');
+    };
 
-  const scrollToSection = (ref) => {
-    ref.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+    const handleGetStartedClick = () => {
+        navigate('/register');
+    };
 
-  if (!tasks || !currentProject) {
+    const scrollToSection = (ref) => {
+        ref.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    useEffect(() => {
+        const animateShape = () => {
+            let animationFrameId;
+            let startTime;
+            const duration = 5000;
+
+            const step = (timestamp) => {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min(1, (timestamp - startTime) / duration);
+
+                if (progress < 0.3) {
+                    setCircleRadius(Math.round((progress / 0.3) * 80));
+                    setRotation(0);
+                } else if (progress >= 0.3 && progress < 0.7) {
+                    setCircleRadius(80);
+                    setRotation(Math.round(((progress - 0.3) / 0.4) * 360));
+                } else {
+                    setCircleRadius(Math.round(((1 - progress) / 0.3) * 80));
+                    setRotation(360);
+                }
+
+                animationFrameId = requestAnimationFrame(step);
+
+                if (progress === 1) {
+                    requestAnimationFrame(animateShape);
+                    cancelAnimationFrame(animationFrameId);
+                }
+            };
+
+            animationFrameId = requestAnimationFrame(step);
+            return () => cancelAnimationFrame(animationFrameId);
+        };
+
+        animateShape();
+    }, []);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 100) {
+                setIsSticky(true);
+            } else {
+                setIsSticky(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    if (!true) {
+        return (
+            <div style={styles.container}>
+                <h2>Dashboard Content Here</h2>
+            </div>
+        );
+    }
+
     return (
-      <div style={vexStyles.container}>
-        <header style={vexStyles.header}>
-          <h1 style={vexStyles.logo}>ProjectHub</h1>
-          <nav style={vexStyles.nav}>
-            <button onClick={() => scrollToSection(homeRef)} style={vexStyles.navLinkButton}>Home</button>
-            <button onClick={() => scrollToSection(featuresRef)} style={vexStyles.navLinkButton}>Features</button>
-            <button onClick={() => scrollToSection(benefitsRef)} style={vexStyles.navLinkButton}>Benefits</button>
-            <button onClick={() => scrollToSection(contactRef)} style={vexStyles.navLinkButton}>Contact</button>
-          </nav>
-          <button onClick={handleSignInClick} style={vexStyles.signInButton}>Sign-In</button>
-        </header>
-        <main style={vexStyles.hero} id="home" ref={homeRef}>
-          <div style={vexStyles.heroContent}>
-            <h2 style={vexStyles.heroTitle}>Power Your Projects<br />with Our App.</h2>
-            <p style={vexStyles.heroSubtitle}>Take control of your projects and stay on top of your goals with our intuitive project management app. Say goodbye to chaos and hello to streamlined efficiency. Try it now and experience the difference.</p>
-            <button style={vexStyles.manageProjectButton}>Manage a New Project</button>
-          </div>
-          {/* Placeholder for the image */}
-          <div style={vexStyles.heroImagePlaceholder}>
+        <div style={vexStyles.container}>
+            <header ref={headerRef} style={{ ...vexStyles.header, ...(isSticky ? vexStyles.headerSticky : {}) }}>
+                <h1 style={{ ...vexStyles.logoAnimated, fontSize: '3rem' }}>ProjectHub</h1> {/* Increased logo size */}
+                <nav style={vexStyles.nav}>
+                    <button onClick={() => scrollToSection(homeRef)} style={vexStyles.navLinkButton}>Home</button>
+                    <button onClick={() => scrollToSection(featuresRef)} style={vexStyles.navLinkButton}>Features</button>
+                    <button onClick={() => scrollToSection(dashboardRef)} style={vexStyles.navLinkButton}>User Dashboard</button>
+                    <button onClick={() => scrollToSection(benefitsRef)} style={vexStyles.navLinkButton}>Benefits</button>
+                </nav>
+                <button onClick={handleSignInClick} style={vexStyles.signInButtonImprovised}>Sign In</button> {/* Using the improvised style */}
+            </header>
+            <main style={vexStyles.hero} ref={homeRef}>
+                <div style={vexStyles.heroContent}>
+                    <h2 style={vexStyles.heroTitle}>Empower Your Student Projects with ProjectHub</h2>
+                    <p style={vexStyles.heroSubtitle}>The ultimate collaborative project management tool designed specifically for students. Seamlessly manage projects, communicate effectively, and access a suite of quick tools within your user dashboard to boost your productivity.</p>
+                    <button onClick={handleGetStartedClick} style={vexStyles.manageProjectButton}>Get Started Now</button>
+                </div>
+                <div style={vexStyles.heroImagePlaceholder}>
   <img src="/logo.png" alt="Logo" style={{ width: '80%', height: 'auto', objectFit: 'contain' }} />
 </div>
+            </main>
 
-        </main>
+            <section style={vexStyles.section} ref={featuresRef}>
+                <h2 style={vexStyles.sectionTitle}>Key Features for Collaborative Success</h2>
+                <div style={vexStyles.featuresGrid}>
+                    <div style={vexStyles.featureCard} onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                        <h3 style={vexStyles.featureCardH3}>Project Creation & Management</h3>
+                        <p style={vexStyles.featureCardP}>Initiate new projects, define clear objectives, and maintain comprehensive control throughout the lifecycle.</p>
+                    </div>
+                    <div style={vexStyles.featureCard} onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                        <h3 style={vexStyles.featureCardH3}>Task Creation & Assignment</h3>
+                        <p style={vexStyles.featureCardP}>Divide projects into actionable tasks, assign team members, and monitor progress with ease.</p>
+                    </div>
+                    <div style={vexStyles.featureCard} onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                        <h3 style={vexStyles.featureCardH3}>Backlog Generator</h3>
+                        <p style={vexStyles.featureCardP}>Efficiently create and organize your project backlog, enabling effective prioritization and planning.</p>
+                    </div>
+                    <div style={vexStyles.featureCard} onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                        <h3 style={vexStyles.featureCardH3}>Group & Personal Chats</h3>
+                        <p style={vexStyles.featureCardP}>Foster real-time communication within project teams and facilitate direct conversations between members.</p>
+                    </div>
+                </div>
+            </section>
 
-        <section style={vexStyles.section} id="features" ref={featuresRef}>
-          <h2 style={vexStyles.sectionTitle}>Key Features</h2>
-          <div style={vexStyles.featuresGrid}>
-            <div style={vexStyles.featureCard}>
-              <h3>Task Management</h3>
-              <p>Organize, assign, and track tasks effortlessly.</p>
-            </div>
-            <div style={vexStyles.featureCard}>
-              <h3>Collaboration Tools</h3>
-              <p>Real-time communication and file sharing for seamless teamwork.</p>
-            </div>
-            <div style={vexStyles.featureCard}>
-              <h3>Progress Tracking</h3>
-              <p>Monitor project progress with visual dashboards and reports.</p>
-            </div>
-            <div style={vexStyles.featureCard}>
-              <h3>Agile Support</h3>
-              <p>Tools designed for Scrum and Kanban methodologies.</p>
-            </div>
-          </div>
-        </section>
+            <section style={vexStyles.section} ref={dashboardRef}>
+                <h2 style={vexStyles.sectionTitle}>Your Personal User Dashboard</h2>
+                <p style={vexStyles.sectionSubtitle}>Access a suite of quick tools designed to enhance your productivity directly from your dashboard.</p>
+                <div style={vexStyles.toolsGrid}>
+                    <div style={vexStyles.toolCard} onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                        <h3 style={vexStyles.toolCardH3}>Calculators</h3>
+                        <p style={vexStyles.toolCardP}>Perform quick calculations without switching applications.</p>
+                    </div>
+                    <div style={vexStyles.toolCard} onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                        <h3 style={vexStyles.toolCardH3}>Dictionary</h3>
+                        <p style={vexStyles.toolCardP}>Instantly look up definitions to clarify terms and enhance understanding.</p>
+                    </div>
+                    <div style={vexStyles.toolCard} onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                        <h3 style={vexStyles.toolCardH3}>Chart Generator</h3>
+                        <p style={vexStyles.toolCardP}>Visualize project data and progress with dynamically generated charts.</p>
+                    </div>
+                    <div style={vexStyles.toolCard} onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                        <h3 style={vexStyles.toolCardH3}>Report Generator</h3>
+                        <p style={vexStyles.toolCardP}>Generate detailed reports on project status, task completion, and team contributions.</p>
+                    </div>
+                </div>
+            </section>
 
-        <section style={vexStyles.section} id="benefits" ref={benefitsRef}>
-          <h2 style={vexStyles.sectionTitle}>Why Choose ProjectHub?</h2>
-          <div style={vexStyles.benefitsList}>
-            <li>Improved Team Collaboration</li>
-            <li>Increased Project Efficiency</li>
-            <li>Better Organization and Planning</li>
-            <li>Enhanced Communication</li>
-            <li>Data-Driven Insights</li>
-          </div>
-        </section>
+            <section style={vexStyles.section} ref={benefitsRef}>
+                <h2 style={vexStyles.sectionTitle}>Unlock the Benefits of ProjectHub for Students</h2>
+                <ul style={vexStyles.benefitsList}>
+                    <li style={vexStyles.benefitsListLi}><span style={vexStyles.benefitIcon}>&#10003;</span> Streamlined Collaboration on Group Assignments</li>
+                    <li style={vexStyles.benefitsListLi}><span style={vexStyles.benefitIcon}>&#10003;</span> Enhanced Organization and Efficient Time Management</li>
+                    <li style={vexStyles.benefitsListLi}><span style={vexStyles.benefitIcon}>&#10003;</span> Real-time Communication for Seamless Teamwork</li>
+                    <li style={vexStyles.benefitsListLi}><span style={vexStyles.benefitIcon}>&#10003;</span> Easy Access to Integrated Productivity Tools</li>
+                    <li style={vexStyles.benefitsListLi}><span style={vexStyles.benefitIcon}>&#10003;</span> Improved Tracking of Individual and Collective Progress</li>
+                    <li style={vexStyles.benefitsListLi}><span style={vexStyles.benefitIcon}>&#10003;</span> Simplified Project Planning and Execution</li>
+                </ul>
+            </section>
 
-        <section style={vexStyles.section} id="contact" ref={contactRef}>
-          <h2 style={vexStyles.sectionTitle}>Contact Us</h2>
-          <p style={vexStyles.contactText}>Have questions or need support? Reach out to our team.</p>
-          <form style={vexStyles.contactForm}>
-            <input type="text" placeholder="Your Name" style={vexStyles.input} />
-            <input type="email" placeholder="Your Email" style={vexStyles.input} />
-            <textarea placeholder="Your Message" rows="5" style={vexStyles.textarea}></textarea>
-            <button type="submit" style={vexStyles.submitButton}>Send Message</button>
-          </form>
-        </section>
-
-        <footer style={vexStyles.footer}>
-          <p>&copy; 2025 ProjectHub. All rights reserved.</p>
-        </footer>
-      </div>
+            <footer style={vexStyles.footer}>
+                <p>&copy; 2025 ProjectHub. All rights reserved.</p>
+            </footer>
+        </div>
     );
-  }
-
-  const taskStatusCount = tasks.reduce((acc, task) => {
-    acc[task.status] = (acc[task.status] || 0) + 1;
-    return acc;
-  }, {});
-
-  const completedTasks = taskStatusCount['completed'] || 0;
-  const inProgressTasks = taskStatusCount['in-progress'] || 0;
-  const todoTasks = taskStatusCount['todo'] || 0;
-
-  const pieData = {
-    labels: ['Completed', 'In Progress', 'To Do'],
-    datasets: [
-      {
-        data: [completedTasks, inProgressTasks, todoTasks],
-        backgroundColor: ['#00bfa6', '#ffc107', '#ff5252'],
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const barData = {
-    labels: ['Tasks'],
-    datasets: [
-      { label: 'Completed', data: [completedTasks], backgroundColor: '#00bfa6' },
-      { label: 'In Progress', data: [inProgressTasks], backgroundColor: '#ffc107' },
-      { label: 'To Do', data: [todoTasks], backgroundColor: '#ff5252' },
-    ],
-  };
-
-  const chartOptions = {
-    responsive: true,
-    plugins: {
-      legend: { position: 'bottom' },
-    },
-    maintainAspectRatio: false,
-  };
-
-  const handleSaveNote = () => {
-    if (agileNotes.trim()) {
-      setSavedNotes([...savedNotes, agileNotes]);
-      setAgileNotes('');
-    }
-  };
-
-  return (
-    <div style={styles.container}>
-      <h2 style={styles.title}>{currentProject.name} Overview</h2>
-
-      {/* ... rest of your dashboard code ... */}
-    </div>
-  );
 };
 
 export default ProjectDashboard;
 
-// Your existing styles
+
+
 const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    minHeight: '100vh',
-    padding: '2rem',
-    background: 'linear-gradient(to bottom right, #111827, #0f172a)',
-    color: '#e5e7eb',
-    fontFamily: "'Inter', sans-serif",
-  },
-  title: {
-    fontSize: '2.2rem',
-    fontWeight: '700',
-    marginBottom: '2rem',
-    color: '#10b981',
-    textAlign: 'center',
-  },
-  statsContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    gap: '1.5rem',
-    marginBottom: '2rem',
-  },
-  statCard: {
-    backgroundColor: '#1f2937',
-    padding: '1.25rem',
-    borderRadius: '1rem',
-    flex: '1 1 240px',
-    textAlign: 'center',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
-    color: '#f9fafb',
-  },
-  chartGrid: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: '2rem',
-    justifyContent: 'center',
-    marginBottom: '3rem',
-  },
-  chartBox: {
-    backgroundColor: '#1f2937',
-    padding: '1.5rem',
-    borderRadius: '1rem',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
-    flex: '1 1 400px',
-    minHeight: '350px',
-  },
-  chartTitle: {
-    fontSize: '1.25rem',
-    fontWeight: '500',
-    color: '#10b981',
-    textAlign: 'center',
-    marginBottom: '1rem',
-  },
-  chart: {
-    height: '300px',
-  },
-  notesSection: {
-    backgroundColor: '#1f2937',
-    padding: '1.5rem',
-    borderRadius: '1rem',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
-  },
-  textarea: {
-    width: '100%',
-    minHeight: '120px',
-    backgroundColor: '#111827',
-    color: '#f3f4f6',
-    border: '1px solid #374151',
-    borderRadius: '0.75rem',
-    padding: '0.85rem',
-    fontSize: '1rem',
-    resize: 'vertical',
-  },
-  saveButton: {
-    marginTop: '1rem',
-    padding: '0.75rem 1.5rem',
-    backgroundColor: '#10b981',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '0.75rem',
-    cursor: 'pointer',
-    fontWeight: '600',
-  },
-  noteList: {
-    marginTop: '1.5rem',
-    color: '#d1d5db',
-    paddingLeft: '1.5rem',
-  },
-  noteItem: {
-    marginBottom: '0.5rem',
-    listStyle: 'disc',
-  },
+    container: {
+        // Your original dashboard styles
+    }
 };
 
 const vexStyles = {
-  container: {
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-    backgroundColor: '#181825',
-    color: '#f4f4f5',
-    display: 'flex',
-    flexDirection: 'column',
-    minHeight: '100vh',
-    margin: 0,
-    padding: 0,
-    overflowY: 'auto', // Enable vertical scrolling
-    scrollBehavior: 'smooth', // Enable smooth scrolling
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '20px 40px',
-    position: 'sticky', // Make the header stick to the top
-    top: 0,
-    backgroundColor: '#181825',
-    zIndex: 10,
-  },
-  logo: {
-    fontSize: '2rem',
-    fontWeight: 'bold',
-    color: '#64ffda',
-  },
-  nav: {
-    display: 'flex',
-  },
-  navLinkButton: {
-    color: '#ccd6f6',
-    textDecoration: 'none',
-    margin: '0 15px',
-    fontSize: '1rem',
-    transition: 'color 0.3s ease',
-    background: 'none',
-    border: 'none',
-    padding: 0,
-    cursor: 'pointer',
-  },
-  navLinkButtonHover: {
-    color: '#64ffda',
-  },
-  signInButton: {
-    backgroundColor: 'transparent',
-    color: '#64ffda',
-    border: '1px solid #64ffda',
-    borderRadius: '5px',
-    padding: '10px 20px',
-    fontSize: '1rem',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s ease, color 0.3s ease',
-  },
-  signInButtonHover: {
-    backgroundColor: '#64ffda1a',
-  },
-  hero: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: '80px 40px',
-    minHeight: 'calc(100vh - 60px)', // Adjust for header height
-  },
-  heroContent: {
-    maxWidth: '600px',
-    textAlign: 'left',
-    marginRight: '40px',
-  },
-  heroTitle: {
-    fontSize: '3rem',
-    fontWeight: 'bold',
-    lineHeight: '1.2',
-    marginBottom: '20px',
-    color: '#ccd6f6',
-  },
-  heroSubtitle: {
-    fontSize: '1.1rem',
-    lineHeight: '1.6',
-    color: '#a8b2d1',
-    marginBottom: '30px',
-  },
-  manageProjectButton: {
-    backgroundColor: '#64ffda',
-    color: '#0a192f',
-    border: 'none',
-    borderRadius: '5px',
-    padding: '15px 30px',
-    fontSize: '1.1rem',
-    fontWeight: 'bold',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s ease',
-  },
-  manageProjectButtonHover: {
-    backgroundColor: '#54e6da',
-  },
-  heroImagePlaceholder: {
-    width: '100%', // Make it responsive to screen size
-    maxWidth: '500px', // Limit the max size
-    height: 'auto', // Allow it to scale responsively with the width
-    aspectRatio: '1', // Keeps the aspect ratio of the container square
-    backgroundColor: '#233554', // Dark background for contrast
-    borderRadius: '10px',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    boxShadow: '0 4px 20px rgba(0,0,0,0.2)', // Subtle shadow for depth
-    marginTop: '20px', // Add some space above
-    marginBottom: '20px', // Add space below
-    overflow: 'hidden', // Prevents any overflow from breaking layout
-  },
-  section: {
-    padding: '80px 40px',
-    textAlign: 'center',
-  },
-  sectionTitle: {
-    fontSize: '2.5rem',
-    fontWeight: 'bold',
-    color: '#ccd6f6',
-    marginBottom: '40px',
-  },
-  featuresGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-    gap: '30px',
-    marginTop: '20px',
-  },
-  featureCard: {
-    backgroundColor: '#233554',
-    padding: '30px',
-    borderRadius: '10px',
-    textAlign: 'left',
-  },
-  featureCardH3: {
-    fontSize: '1.5rem',
-    color: '#64ffda',
-    marginBottom: '15px',
-  },
-  featureCardP: {
-    color: '#a8b2d1',
-    lineHeight: '1.6',
-  },
-  benefitsList: {
-    textAlign: 'left',
-    margin: '20px auto',
-    maxWidth: '600px',
-    listStyleType: 'none',
-    paddingLeft: 0,
-  },
-  benefitsListLi: {
-    fontSize: '1.1rem',
-    color: '#a8b2d1',
-    lineHeight: '1.8',
-    marginBottom: '10px',
-    position: 'relative',
-    paddingLeft: '25px',
-  },
-  benefitsListLiBefore: {
-    content: "'\\2022'",
-    color: '#64ffda',
-    position: 'absolute',
-    left: 0,
-    top: '5px',
-    fontSize: '1.5rem',
-  },
-  contactText: {
-    color: '#a8b2d1',
-    marginBottom: '30px',
-    fontSize: '1.1rem',
-  },
-  contactForm: {
-    maxWidth: '500px',
-    margin: '0 auto',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px',
-  },
-  input: {
-    backgroundColor: '#233554',
-    border: 'none',
-    borderRadius: '5px',
-    padding: '15px',
-    color: '#ccd6f6',
-    fontSize: '1rem',
-    '&::placeholder': {
-      color: '#a8b2d1',
+    container: {
+        fontFamily: "'Open Sans', sans-serif",
+        background: 'linear-gradient(to bottom, #30197d, #1a0a47)',
+        color: '#fff',
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        margin: 0,
+        padding: 0,
+        overflowY: 'auto',
+        scrollBehavior: 'smooth',
     },
-  },
-  textarea: {
-    backgroundColor: '#233554',
-    border: 'none',
-    borderRadius: '5px',
-    padding: '15px',
-    color: '#ccd6f6',
-    fontSize: '1rem',
-    '&::placeholder': {
-      color: '#a8b2d1',
+    header: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '25px 50px',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        background: 'transparent',
+        zIndex: 10,
+        width: '100%',
+        transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
     },
-  },
-  submitButton: {
-    backgroundColor: '#64ffda',
-    color: '#0a192f',
-    border: 'none',
-    borderRadius: '5px',
-    padding: '15px 30px',
-    fontSize: '1.1rem',
-    fontWeight: 'bold',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s ease',
-  },
-  submitButtonHover: {
-    backgroundColor: '#54e6da',
-  },
-  footer: {
-    textAlign: 'center',
-    padding: '30px 0',
-    color: '#a8b2d1',
-    fontSize: '0.9rem',
-    backgroundColor: '#233554',
-},
+    headerSticky: {
+        background: '#1a0a47',
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+    },
+    logo: {
+        fontSize: '2.5rem',
+        fontWeight: '700',
+        color: '#fff',
+    },
+    logoAnimated: {
+        fontSize: '2.5rem',
+        fontWeight: '700',
+        background: 'linear-gradient(to right, #a770ef, #cf8bfd)',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        animation: 'flowGradient 2.5s linear infinite alternate',
+    },
+    nav: {
+        display: 'flex',
+    },
+    navLinkButton: {
+        color: '#fff',
+        textDecoration: 'none',
+        margin: '0 20px',
+        fontSize: '1.15rem',
+        transition: 'color 0.3s ease',
+        background: 'none',
+        border: 'none',
+        padding: 0,
+        cursor: 'pointer',
+    },
+    navLinkButtonHover: {
+        color: '#e0f7fa',
+    },
+    signInButton: {
+        backgroundColor: 'transparent',
+        color: '#fff',
+        border: '2px solid #fff',
+        borderRadius: '10px',
+        padding: '12px 25px',
+        fontSize: '1.15rem',
+        cursor: 'pointer',
+        transition: 'background-color 0.3s ease, color 0.3s ease',
+    },
+    signInButtonHover: {
+        backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    },
+    signInButtonImprovised: { // New style for the sign-in button
+        backgroundColor: '#fff', // Full white background
+        color: '#30197d', // Dark purple text to contrast
+        border: 'none', // Remove border
+        borderRadius: '15px', // More rounded corners
+        padding: '15px 30px', // Larger padding for a bigger button
+        fontSize: '1.3rem', // Increased font size
+        fontWeight: '600', // Make the text bolder
+        cursor: 'pointer',
+        transition: 'background-color 0.3s ease, color 0.3s ease, transform 0.2s ease',
+    },
+    signInButtonImprovisedHover: {
+        backgroundColor: '#f0f0f0', // Slightly lighter on hover
+        transform: 'scale(1.05)', // Subtle scale animation on hover
+        color: '#1a0a47', // Even darker purple on hover
+    },
+    hero: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '150px 50px 100px',
+        minHeight: 'calc(100vh - 90px)',
+        marginTop: 0,
+    },
+    heroContent: {
+        maxWidth: '700px',
+        textAlign: 'left',
+        marginRight: '50px',
+    },
+    heroTitle: {
+        fontSize: '4rem',
+        fontWeight: '800',
+        lineHeight: '1.2',
+        marginBottom: '30px',
+        color: '#fff',
+    },
+    heroSubtitle: {
+        fontSize: '1.3rem',
+        lineHeight: '1.8',
+        color: '#f0f8ff',
+        marginBottom: '50px',
+    },
+    manageProjectButton: {
+        backgroundColor: '#673ab7',
+        color: '#fff',
+        border: 'none',
+        borderRadius: '10px',
+        padding: '18px 35px',
+        fontSize: '1.25rem',
+        fontWeight: '600',
+        cursor: 'pointer',
+        transition: 'background-color 0.3s ease, transform 0.2s ease',
+    },
+    manageProjectButtonHover: {
+        backgroundColor: '#512da8',
+        transform: 'scale(1.05)',
+    },
+    heroImagePlaceholder: {
+        width: '100%',
+        maxWidth: '500px', // Limit the max size
+        height: 'auto',
+        aspectRatio: '1',
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        borderRadius: '15px',
+        overflow: 'hidden',
+        boxShadow: '0 6px 20px rgba(0, 0, 0, 0.25)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        display: 'flex',
+
+    },
+
+    section: {
+        padding: '100px 50px',
+        textAlign: 'center',
+    },
+    sectionTitle: {
+        fontSize: '3rem',
+        fontWeight: '700',
+        color: '#fff',marginBottom: '60px',
+    },
+    sectionSubtitle: {
+        fontSize: '1.2rem',
+        color: '#e0f7fa',
+        marginBottom: '40px',
+    },
+    featuresGrid: {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+        gap: '50px',
+        marginTop: '40px',
+    },
+    featureCard: {
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        padding: '40px',
+        borderRadius: '15px',
+        textAlign: 'left',
+        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+        transition: 'transform 0.3s ease',
+    },
+    featureCardH3: {
+        fontSize: '1.8rem',
+        color: '#a770ef',
+        marginBottom: '20px',
+    },
+    featureCardP: {
+        color: '#f0f8ff',
+        lineHeight: '1.8',
+    },
+    toolsGrid: {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+        gap: '40px',
+        marginTop: '30px',
+    },
+    toolCard: {
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        padding: '30px',
+        borderRadius: '15px',
+        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+        transition: 'transform 0.3s ease',
+    },
+    toolCardH3: {
+        fontSize: '1.6rem',
+        color: '#fdd835',
+        marginBottom: '15px',
+    },
+    toolCardP: {
+        color: '#f0f8ff',
+        lineHeight: '1.7',
+    },
+    benefitsList: {
+        textAlign: 'left',
+        margin: '40px auto',
+        maxWidth: '800px',
+        listStyleType: 'none',
+        paddingLeft: 0,
+    },
+    benefitsListLi: {
+        fontSize: '1.3rem',
+        color: '#f0f8ff',
+        lineHeight: '2.0',
+        marginBottom: '20px',
+        position: 'relative',
+        paddingLeft: '35px',
+    },
+    benefitIcon: {
+        color: '#4caf50',
+        position: 'absolute',
+        left: 0,
+        top: '2px',
+        fontSize: '1.6rem',
+    },
+    footer: {
+        textAlign: 'center',
+        padding: '50px 0',
+        color: '#e0f7fa',
+        fontSize: '0.95rem',
+        background: 'linear-gradient(to bottom, #30197d, #1a0a47)',
+    },
+    '@keyframes flowGradient': {
+        '0%': { backgroundPosition: '0% 50%' },
+        '100%': { backgroundPosition: '100% 50%' },
+    },
 };

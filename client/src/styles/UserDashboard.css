@@ -1,20 +1,33 @@
-body { 
+body {
     margin: 0;
     font-family: 'Inter', sans-serif;
+    background: linear-gradient(-45deg, #6200ea, #4a148c, #311b92, #4a148c);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
 }
 
 .dashboard-section {
-    padding: 1rem;
-    color: #e5e7eb;
+    padding: 2rem 1rem; /* Increased vertical padding, reduced horizontal */
+    color: #f3e5f5;
     font-family: 'Inter', sans-serif;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
     position: relative;
     box-sizing: border-box;
-    background: linear-gradient(135deg, #1c1c1e, #2a3440);
+    background: transparent;
+    overflow: hidden;
+}
 
-    /* Dark background similar to Discord */
+.dashboard-background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
 }
 
 .top-right-link {
@@ -30,62 +43,74 @@ body {
     gap: 0.5rem;
     color: #fff;
     text-decoration: none;
-    padding: 0.25rem 0.75rem;
-    border-radius: 0.5rem;
-    background-color: #7289da; /* Discord blue */
-    transition: background-color 0.3s ease;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    background: linear-gradient(to right, #ab47bc, #9c27b0);
+    transition: all 0.3s ease;
     border: none;
     cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1;
 }
 
 .home-link:hover {
-    background-color: #4e6fa1;
+    background: linear-gradient(to right, #af52d4, #a333c8);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 .dashboard-welcome-heading {
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
     color: #fff;
     text-align: center;
-    background: linear-gradient(to right, #00c2ff, #7289da); /* Gradient like Discord */
+    background: linear-gradient(to right, #ce93d8, #ba68c8, #9c27b0);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    position: relative;
+    z-index: 1;
+    letter-spacing: -0.02em;
 }
 
 .dashboard-subtitle {
     font-size: 1rem;
-    color: #b0b3b8;
+    color: #d1c4e9;
     text-align: center;
     margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+    line-height: 1.7;
 }
 
 .dashboard-summary-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
     margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
 }
 
 .summary-card {
-    background-color: #2f3136; /* Discord's card background */
-    padding: 1rem;
-    border-radius: 1rem;
+    background-color: #5e35b1;
+    padding: 1.2rem;
+    border-radius: 0.75rem;
     text-align: left;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    border: 1px solid #4a4f56;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    border: 1px solid #7e57c2;
 }
 
 .summary-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-8px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
 }
 
 .summary-icon {
     margin-bottom: 0.75rem;
-    color: #00c2ff; /* Discord blue for icons */
-    font-size: 2rem; /* Add this line */
+    color: #ce93d8;
+    font-size: 2.5rem;
 }
 
 .summary-content h4 {
@@ -93,27 +118,32 @@ body {
     font-weight: 600;
     color: #fff;
     margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
 }
 
 .summary-content p {
     font-size: 0.9rem;
-    color: #b0b3b8;
+    color: #d1c4e9;
+    line-height: 1.5;
 }
 
 .tools-and-resources {
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
+    position: relative;
+    z-index: 1;
 }
 
 .quick-tools-container {
-    background-color: #2f3136;
-    padding: 1rem;
-    border-radius: 1rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #5e35b1;
+    padding: 1.2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     margin-bottom: 1.5rem;
     flex: 1;
-    border: 1px solid #4a4f56;
+    border: 1px solid #7e57c2;
+    min-width: 280px;
 }
 
 .user-quick-tools-container {
@@ -121,104 +151,117 @@ body {
 }
 
 .quick-tools-title {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: 600;
     color: #fff;
     text-align: left;
-    margin-bottom: 1.25rem;
-    background: linear-gradient(to right, #6ee7b7, #3b82f6);
+    margin-bottom: 1rem;
+    background: linear-gradient(to right, #f06292, #ab47bc, #9c27b0);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    position: relative;
+    z-index: 1;
+    letter-spacing: -0.02em;
 }
 
 .tools-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
 }
 
 .user-tools-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
 }
 
-.user-dashboard .tool-button { 
+.user-dashboard .tool-button {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1rem;
-    border-radius: 8px;
-    background-color: #2f3136; /* Matches dashboard cards */
-    color: #e5e7eb; /* Light gray text */
+    padding: 1.2rem;
+    border-radius: 0.75rem;
+    background-color: #5e35b1;
+    color: #f3e5f5;
     text-decoration: none;
-    border: 1px solid #4a4f56; /* Subtle border */
-    transition:
-        background-color 0.3s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-  }
-  
-  .user-dashboard .tool-button:hover {
-    background-color: #3b4252; /* Slightly lighter on hover */
-    transform: translateY(-4px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-    color: #6ee7b7; /* Accent hover text */
-  }
-  
-  .user-dashboard .tool-icon {
-    width: 48px;
-    height: 48px;
-    background: rgb(155, 155, 155);
+    border: 1px solid #7e57c2;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-dashboard .tool-button:hover {
+    background-color: #7e57c2;
+    transform: translateY(-6px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+    color: #f8bbd0;
+}
+
+.user-dashboard .tool-icon {
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 0.5rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
-  
-  .user-dashboard .tool-icon i {
-    font-size: 1.25rem;
     color: inherit;
-  }
-  
-  .user-dashboard .tool-button span {
-    font-size: 0.875rem;
+}
+
+.user-dashboard .tool-icon i {
+    font-size: 1.75rem;
+    color: inherit;
+}
+
+.user-dashboard .tool-button span {
+    font-size: 0.9rem;
     font-weight: 500;
-  }
-  
+    letter-spacing: -0.02em;
+    text-align: center;
+}
+
 .loading-dashboard {
-    color: #fff;
+    color: #f3e5f5;
     font-size: 1rem;
     text-align: center;
-    padding: 1rem;
+    padding: 1.2rem;
+    position: relative;
+    z-index: 1;
 }
 
 .error-dashboard {
-    color: red;
+    color: #f44336;
     font-size: 1rem;
     text-align: center;
-    padding: 1rem;
+    padding: 1.2rem;
+    position: relative;
+    z-index: 1;
 }
 
 .additional-resources {
-    background-color: #2f3136;
-    padding: 1rem;
-    border-radius: 1rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #5e35b1;
+    padding: 1.2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     margin-bottom: 1.5rem;
     flex: 1;
-    border: 1px solid #4a4f56;
+    border: 1px solid #7e57c2;
+    min-width: 280px;
 }
 
 .resources-title {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: 600;
     color: #fff;
     text-align: left;
-    margin-bottom: 1.25rem;
-    background: linear-gradient(to right, #f9a8d4, #8b5cf6);
+    margin-bottom: 1rem;
+    background: linear-gradient(to right, #e91e63, #ab47bc, #9c27b0);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    position: relative;
+    z-index: 1;
+    letter-spacing: -0.02em;
 }
 
 .resources-list {
@@ -229,32 +272,36 @@ body {
 
 .resource-item {
     margin-bottom: 1rem;
-    transition: transform 0.3s ease, color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .resource-item a {
-    color: #ffffff;
+    color: #f3e5f5;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 500;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    position: relative;
+    z-index: 1;
 }
 
 .resource-item a:hover {
-    color: #6ee7b7;
-    transform: translateX(3px);
+    color: #f8bbd0;
+    transform: translateX(5px);
 }
 
 .dashboard-footer {
-    background-color: #1e293b;
-    color: #e5e7eb;
-    padding: 1rem;
+    background-color: #311b92;
+    color: #f3e5f5;
+    padding: 1.2rem;
     text-align: center;
     margin-top: auto;
     width: 100%;
-    border-top: 1px solid #4a5568;
+    border-top: 1px solid #5e35b1;
+    position: relative;
+    z-index: 1;
 }
 
 .footer-content {
@@ -270,62 +317,71 @@ body {
 }
 
 .social-links a {
-    color: #e5e7eb;
+    color: #f3e5f5;
     text-decoration: none;
     transition: color 0.3s ease;
+    font-size: 1rem;
 }
 
 .social-links a:hover {
-    color: #6ee7b7;
+    color: #f8bbd0;
 }
 
 .contact-details {
-    font-size: 1rem;
+    font-size: 0.9rem;
     margin-bottom: 1rem;
+    line-height: 1.5;
 }
 
 .copyright {
-    font-size: 0.9rem;
-    color: #9ca3af;
+    font-size: 0.8rem;
+    color: #b39ddb;
 }
 
-/* Project Progress Styles */
 .project-progress-container {
-    background-color: #2f3136;
-    padding: 1rem;
-    border-radius: 1rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #5e35b1;
+    padding: 1.2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     margin-bottom: 1.5rem;
-    border: 1px solid #4a4f56;
+    border: 1px solid #7e57c2;
+    position: relative;
+    z-index: 1;
 }
 
 .project-progress-title {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: 600;
     color: #fff;
-    margin-bottom: 1.25rem;
-    background: linear-gradient(to right, #8b5cf6, #3b82f6);
+    margin-bottom: 1rem;
+    background: linear-gradient(to right, #ab47bc, #9c27b0, #7b1fa2);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    position: relative;
+    z-index: 1;
+    letter-spacing: -0.02em;
 }
 
 .project-progress-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
 }
 
 .project-progress-card {
-    background-color: #3b3b4f;
-    padding: 1rem;
-    border-radius: 1rem;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    border: 1px solid #6b7280;
+    background-color: #7e57c2;
+    padding: 1.2rem;
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+    border: 1px solid #9575cd;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .project-progress-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-6px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
 }
 
 .project-title {
@@ -333,28 +389,98 @@ body {
     font-weight: 600;
     color: #fff;
     margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
 }
 
 .progress-bar-container {
-    background-color: #4a5568;
+    background-color: #9575cd;
     height: 1rem;
     border-radius: 0.5rem;
     position: relative;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
+    z-index: 1;
 }
 
 .progress-bar {
-    background-color: #38bdf8;
+    background: linear-gradient(to right, #ba68c8, #e57373);
     height: 100%;
     border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .project-progress-details {
-    font-size: 0.875rem;
-    color: #b0b3b8;
+    font-size: 0.9rem;
+    color: #d1c4e9;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .project-progress-percentage {
     font-size: 1rem;
-    color: #b0b3b8;
+    color: #fff;
+    font-weight: 600;
+}
+
+.dashboard-content-wrapper {
+    position: relative;
+    z-index: 2;
+    padding: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .dashboard-welcome-heading {
+        font-size: 1.8rem;
+    }
+
+    .dashboard-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .dashboard-summary-cards {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .user-tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .project-progress-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .quick-tools-container,
+    .additional-resources {
+        min-width: auto;
+    }
+    .dashboard-section{
+        padding: 1.5rem 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .dashboard-welcome-heading {
+        font-size: 1.5rem;
+    }
+
+    .dashboard-subtitle {
+        font-size: 0.8rem;
+    }
+
+    .dashboard-summary-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .user-tools-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .project-progress-grid {
+        grid-template-columns: 1fr;
+    }
+     .dashboard-section{
+        padding: 1rem;
+    }
 }

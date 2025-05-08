@@ -1,12 +1,12 @@
-import React, { useContext, useState, useEffect } from 'react'; 
+import React, { useContext, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaCalculator, FaChartLine, FaBook, FaFileAlt, FaGraduationCap, FaQuestionCircle } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { AuthContext } from '../../context/AuthContext';
 import { ProjectContext } from '../../context/ProjectContext';
 import '../../styles/UserDashboard.css';
-import logo from './logo.png';  // Adjust the path if the image is in the same folder
-
+import backgroundVideo from '../../styles/background.mp4'; // Import the background video
+import logo from './logo.png'; // Adjust the path if the image is in the same folder
 
 const UserDashboard = () => {
     const { currentUser } = useContext(AuthContext);
@@ -68,6 +68,24 @@ const UserDashboard = () => {
 
     return (
         <div className="dashboard-section user-dashboard">
+            {/* Background Video */}
+            <video
+                src={backgroundVideo}
+                autoPlay
+                loop
+                muted
+                className="dashboard-background-video"
+                style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    zIndex: -1, // Ensure it's behind other content
+                }}
+            />
+
             <motion.h1
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}

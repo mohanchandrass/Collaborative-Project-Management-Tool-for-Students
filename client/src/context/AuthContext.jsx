@@ -14,7 +14,10 @@ import {
   updateDoc,
   collection,
   addDoc,
-  serverTimestamp
+  serverTimestamp,
+  query,
+  where,
+  getDocs
 } from 'firebase/firestore';
 
 export const AuthContext = createContext();
@@ -22,41 +25,47 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
-const signup = async (username, email, password) => {
-  try {
-    const userCred = await createUserWithEmailAndPassword(auth, email, password);
-    const uid = userCred.user.uid;
-
-    const userData = {
-      id: uid,
-      username,
-      email,
-      avatar: `https://i.pravatar.cc/150?u=${uid}`,
-      status: 'Online',
-      createdAt: serverTimestamp(), 
-      groups: []
-    };
-
-    // Save user data to Firestore
+  const signup = async (username, email, password) => {
     try {
+      // 🔍 Check if username already exists
+      const usersRef = collection(firestore, 'users');
+      const q = query(usersRef, where('username', '==', username.trim()));
+      const querySnapshot = await getDocs(q);
+  
+      if (!querySnapshot.empty) {
+        throw new Error('Username already taken. Please choose another.');
+      }
+  
+      // ✅ Proceed to create user
+      const userCred = await createUserWithEmailAndPassword(auth, email, password);
+      const uid = userCred.user.uid;
+  
+      const userData = {
+        id: uid,
+        username,
+        email,
+        avatar: `https://i.pravatar.cc/150?u=${uid}`,
+        status: 'Online',
+        createdAt: serverTimestamp(),
+        groups: []
+      };
+  
+      // Save user data to Firestore
       await setDoc(doc(firestore, 'users', uid), userData);
+  
+      // Update Firebase Auth profile
+      await updateProfile(userCred.user, {
+        displayName: username,
+      });
+  
+      setCurrentUser(userData);
+      return userData;
     } catch (error) {
-      console.error("Error saving user data to Firestore: ", error);
-      throw new Error('Failed to save user data to Firestore');
+      console.error("Error during signup:", error);
+      throw new Error(error.message || 'Signup failed');
     }
-
-    // Update profile with username
-    await updateProfile(userCred.user, {
-      displayName: username,
-    });
-
-    setCurrentUser(userData);
-    return userData;
-  } catch (error) {
-    console.error("Error during signup:", error);
-    throw new Error(error.message); // Return the error message to be handled in the component
-  }
-};
+  };
+  
 
 
   // Login: Auth + Fetch Firestore profile
