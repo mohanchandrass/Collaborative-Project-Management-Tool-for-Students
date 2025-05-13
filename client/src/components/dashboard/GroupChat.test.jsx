@@ -1,14 +1,14 @@
-import React from "react";
+import { describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import GroupChat from "./GroupChat";
 import { MemoryRouter } from "react-router-dom";
 
 // Mock scrollIntoView
-window.HTMLElement.prototype.scrollIntoView = jest.fn();
+window.HTMLElement.prototype.scrollIntoView = vi.fn();
 
 // Mock Firebase
-jest.mock("../../firebase", () => ({
-  firestore: jest.fn(),
+vi.mock("../../firebase", () => ({
+  firestore: vi.fn(),
   auth: {
     currentUser: {
       uid: "test-user",
@@ -17,18 +17,18 @@ jest.mock("../../firebase", () => ({
   },
 }));
 
-jest.mock("firebase/firestore", () => ({
-  collection: jest.fn(),
-  query: jest.fn(),
-  orderBy: jest.fn(),
-  onSnapshot: jest.fn((q, callback) => {
+vi.mock("firebase/firestore", () => ({
+  collection: vi.fn(),
+  query: vi.fn(),
+  orderBy: vi.fn(),
+  onSnapshot: vi.fn((q, callback) => {
     callback({
       docs: [],
     });
-    return jest.fn(); // mock unsubscribe
+    return vi.fn(); // mock unsubscribe
   }),
-  addDoc: jest.fn(() => Promise.resolve()),
-  serverTimestamp: jest.fn(),
+  addDoc: vi.fn(() => Promise.resolve()),
+  serverTimestamp: vi.fn(),
 }));
 
 describe("GroupChat", () => {

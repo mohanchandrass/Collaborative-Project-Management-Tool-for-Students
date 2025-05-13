@@ -6,14 +6,13 @@ import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBJr0hP-KIDLGc4eo3sDGWQkO7zobnKBZQ",
-  authDomain: "project-management-tool-63c40.firebaseapp.com",
-  projectId: "project-management-tool-63c40",
-  storageBucket: "project-management-tool-63c40.firebasestorage.app",
-  messagingSenderId: "646477257627",
-  appId: "1:646477257627:web:eb7db3a1eb30473ba05f3e",
-  measurementId: "G-QQKBENYLME"
-  
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
@@ -21,7 +20,7 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize services
 const auth = getAuth(app);
-const firestoreInstance = getFirestore(app);  // Renaming firestore to firestoreInstance to avoid conflicts
+const firestoreInstance = getFirestore(app); // Renaming firestore to firestoreInstance to avoid conflicts
 const storage = getStorage(app);
 
 // Export services

@@ -1,4 +1,4 @@
-import React from "react";
+import { describe, it, expect, vi } from "vitest";
 import styled from "styled-components";
 import LinearProgress from "@mui/material/LinearProgress";
 

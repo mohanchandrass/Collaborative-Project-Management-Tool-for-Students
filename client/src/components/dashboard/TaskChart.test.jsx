@@ -1,25 +1,25 @@
-import React from "react";
+import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import TaskChart from "./TaskChart";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 // Mock chart component
-jest.mock("react-chartjs-2", () => ({
+vi.mock("react-chartjs-2", () => ({
   Pie: () => <div>Pie Chart Mock</div>,
 }));
 
 // Mock Firebase
-jest.mock("../../firebase", () => ({
-  firestore: jest.fn(),
+vi.mock("../../firebase", () => ({
+  firestore: vi.fn(),
 }));
 
-jest.mock("firebase/firestore", () => ({
-  collection: jest.fn(),
-  onSnapshot: jest.fn((ref, callback) => {
+vi.mock("firebase/firestore", () => ({
+  collection: vi.fn(),
+  onSnapshot: vi.fn((ref, callback) => {
     callback({
-      forEach: jest.fn(),
+      forEach: vi.fn(),
     });
-    return jest.fn(); // mock unsubscribe
+    return vi.fn(); // mock unsubscribe
   }),
 }));
 
