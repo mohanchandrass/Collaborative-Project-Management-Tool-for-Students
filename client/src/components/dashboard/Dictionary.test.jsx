@@ -1,10 +1,10 @@
-import React from "react";
+import { describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import Dictionary from "./Dictionary";
 import { MemoryRouter } from "react-router-dom";
 
 // Mock fetch
-global.fetch = jest.fn(() =>
+global.fetch = vi.fn(() =>
   Promise.resolve({
     json: () =>
       Promise.resolve([{

@@ -1,20 +1,20 @@
-import React from "react";
+import { describe, it, expect, vi } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import ReportGenerator from "./ReportGenerator";
 
 // Mock jsPDF
-jest.mock("jspdf", () => ({
+vi.mock("jspdf", () => ({
   __esModule: true,
-  default: jest.fn().mockImplementation(() => ({
-    setFont: jest.fn(),
-    setFontSize: jest.fn(),
-    text: jest.fn(),
-    line: jest.fn(),
-    setLineWidth: jest.fn(),
-    save: jest.fn(),
-    splitTextToSize: jest.fn().mockReturnValue([]),
+  default: vi.fn().mockImplementation(() => ({
+    setFont: vi.fn(),
+    setFontSize: vi.fn(),
+    text: vi.fn(),
+    line: vi.fn(),
+    setLineWidth: vi.fn(),
+    save: vi.fn(),
+    splitTextToSize: vi.fn().mockReturnValue([]),
     internal: {
-      getNumberOfPages: jest.fn().mockReturnValue(1),
+      getNumberOfPages: vi.fn().mockReturnValue(1),
     },
   })),
 }));

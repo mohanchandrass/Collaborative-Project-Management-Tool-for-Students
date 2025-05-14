@@ -1,4 +1,4 @@
-import React from "react";
+import { describe, it, expect, vi } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import ProjectCard from "./ProjectCard";
 
@@ -9,8 +9,8 @@ describe("ProjectCard", () => {
     status: "In Progress",
   };
 
-  const mockOnClick = jest.fn();
-  const mockOnDelete = jest.fn();
+  const mockOnClick = vi.fn();
+  const mockOnDelete = vi.fn();
 
   it("renders without crashing", () => {
     render(

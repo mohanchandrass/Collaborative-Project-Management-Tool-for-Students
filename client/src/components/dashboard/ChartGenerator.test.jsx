@@ -1,10 +1,10 @@
-import React from "react";
+import { describe, it, expect, vi } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import ChartGenerator from "./ChartGenerator";
 import { MemoryRouter } from "react-router-dom";
 
 // Mock chart components
-jest.mock("react-chartjs-2", () => ({
+vi.mock("react-chartjs-2", () => ({
   Pie: () => <div>Pie Chart Mock</div>,
   Bar: () => <div>Bar Chart Mock</div>,
   Line: () => <div>Line Chart Mock</div>,

@@ -1,30 +1,30 @@
-import React from "react";
+import { describe, it, expect, vi } from "vitest";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import MyProjects from "./MyProjects";
 
 // Mock Firebase with proper unsubscribe
-jest.mock("../../firebase", () => ({
-  firestore: jest.fn(),
+vi.mock("../../firebase", () => ({
+  firestore: vi.fn(),
 }));
 
-jest.mock("firebase/firestore", () => ({
-  collection: jest.fn(),
-  onSnapshot: jest.fn((ref, callback) => {
+vi.mock("firebase/firestore", () => ({
+  collection: vi.fn(),
+  onSnapshot: vi.fn((ref, callback) => {
     callback({
       docs: [],
     });
-    return jest.fn(); // mock unsubscribe
+    return vi.fn(); // mock unsubscribe
   }),
-  doc: jest.fn(),
-  deleteDoc: jest.fn(),
-  updateDoc: jest.fn(),
-  addDoc: jest.fn(),
-  query: jest.fn(),
-  orderBy: jest.fn(),
-  getDocs: jest.fn(() => Promise.resolve({ forEach: jest.fn() })),
+  doc: vi.fn(),
+  deleteDoc: vi.fn(),
+  updateDoc: vi.fn(),
+  addDoc: vi.fn(),
+  query: vi.fn(),
+  orderBy: vi.fn(),
+  getDocs: vi.fn(() => Promise.resolve({ forEach: vi.fn() })),
 }));
 
-jest.mock("react-chartjs-2", () => ({
+vi.mock("react-chartjs-2", () => ({
   Line: () => <div>Line Chart Mock</div>,
 }));
 
