@@ -16,18 +16,18 @@ Welcome to the **Collaborative Project Management Tool for Students**! This app 
 
 ## Table of Contents
 
-- [💡 Features](#💡-features)
-- [🖥️ Technologies Used](#🖥️-technologies-used)
-- [🚀 Getting Started](#🚀-getting-started)
-- [🌟 Features Walkthrough](#🌟-features-walkthrough)
-- [🛠️ Contributing](#🛠️-contributing)
-- [📄 License](#📄-license)
-- [📬 Contact](#📬-contact)
-- [🚧 Roadmap](#🚧-roadmap)
+- [💡 Features](#features)
+- [🖥️ Technologies Used](#technologies-used)
+- [🚀 Getting Started](#getting-started)
+- [🌟 Features Walkthrough](#features-walkthrough)
+- [🛠️ Contributing](#🛠contributing)
+- [📄 License](#license)
+- [📬 Contact](#contact)
+- [🚧 Roadmap](#roadmap)
 
 ---
 
-## 💡 Features
+## Features
 
 ✨ **Task Management**: Create, assign, and track tasks in real-time.  
 📅 **Project Overview**: Keep your projects organized with a clear dashboard of tasks, deadlines, and statuses.  
@@ -37,7 +37,7 @@ Welcome to the **Collaborative Project Management Tool for Students**! This app 
 
 ---
 
-## 🖥️ Technologies Used
+## Technologies Used
 
 - **Frontend**: React, Redux, Material UI
 - **Backend**: Firebase (Firestore, Firebase Authentication)
@@ -48,7 +48,7 @@ Welcome to the **Collaborative Project Management Tool for Students**! This app 
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 Clone the repository and set up your environment in just a few steps:
 
@@ -90,9 +90,9 @@ The app will be available at [http://localhost:3000](http://localhost:3000).
 
 ---
 
-## 🌟 Features Walkthrough
+## Features Walkthrough
 
-### 🗂️ Group Dashboard
+### Group Dashboard
 
 The **Group Dashboard** is where everything happens! Track your project’s tasks, see project updates, and get notifications about new updates.
 
@@ -100,14 +100,14 @@ The **Group Dashboard** is where everything happens! Track your project’s task
 - **My Projects**: View and manage all your active projects.
 - **Task Status**: Visualize task progress through a dynamic chart.
 
-### 💬 Real-time Group Chat
+### Real-time Group Chat
 
 Stay connected with your team via **Group Chat**! Create a group chat, send messages, and keep all communication in one place.
 
 - **Create Chat**: Start a new chat for your group.
 - **Leave Group**: Easily leave any chat if you no longer need it.
 
-## 🛠️ Contributing
+## Contributing
 
 We welcome contributions from the community! If you'd like to contribute, feel free to:
 
@@ -119,13 +119,13 @@ We welcome contributions from the community! If you'd like to contribute, feel f
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 📬 Contact
+## Contact
 
 If you have any questions, feel free to reach out!
 
@@ -133,7 +133,7 @@ If you have any questions, feel free to reach out!
 
 ---
 
-## 🚧 Roadmap
+## Roadmap
 
 Here’s a glimpse into the future of this project:
 
