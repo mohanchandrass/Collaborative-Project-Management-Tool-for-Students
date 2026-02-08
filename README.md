@@ -9,7 +9,6 @@
 <img src="https://img.shields.io/badge/Deployment-Fullstack%20Hosting-lightgrey?style=flat-square" alt="Deployment">
 </p>
 
-```
 *A centralized platform designed to streamline academic teamwork through
 structured task management, real-time communication, and project
 analytics.*
