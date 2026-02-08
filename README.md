@@ -2,15 +2,13 @@
 
 ## Real-Time Collaborative Academic Project Management Platform
 
-```{=html}
 <p align="left">
-```
-`<img src="https://img.shields.io/badge/Domain-Student%20Collaboration-orange?style=flat-square" alt="Domain">`{=html}
-`<img src="https://img.shields.io/badge/Architecture-Web%20Based-blue?style=flat-square" alt="Architecture">`{=html}
-`<img src="https://img.shields.io/badge/Realtime-Firebase-green?style=flat-square" alt="Realtime">`{=html}
-`<img src="https://img.shields.io/badge/Deployment-Firebase%20Hosting-lightgrey?style=flat-square" alt="Deployment">`{=html}
-```{=html}
+<img src="https://img.shields.io/badge/Domain-Student%20Collaboration-orange?style=flat-square" alt="Domain">
+<img src="https://img.shields.io/badge/Architecture-Web%20Based-blue?style=flat-square" alt="Architecture">
+<img src="https://img.shields.io/badge/Realtime-Firebase-green?style=flat-square" alt="Realtime">
+<img src="https://img.shields.io/badge/Deployment-Firebase%20Hosting-lightgrey?style=flat-square" alt="Deployment">
 </p>
+
 ```
 *A centralized platform designed to streamline academic teamwork through
 structured task management, real-time communication, and project
