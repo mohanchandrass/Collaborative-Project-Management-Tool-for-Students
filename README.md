@@ -6,7 +6,7 @@
 <img src="https://img.shields.io/badge/Domain-Student%20Collaboration-orange?style=flat-square" alt="Domain">
 <img src="https://img.shields.io/badge/Architecture-Web%20Based-blue?style=flat-square" alt="Architecture">
 <img src="https://img.shields.io/badge/Realtime-Firebase-green?style=flat-square" alt="Realtime">
-<img src="https://img.shields.io/badge/Deployment-Firebase%20Hosting-lightgrey?style=flat-square" alt="Deployment">
+<img src="https://img.shields.io/badge/Deployment-Fullstack%20Hosting-lightgrey?style=flat-square" alt="Deployment">
 </p>
 
 ```
