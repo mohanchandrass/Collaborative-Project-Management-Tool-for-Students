@@ -1,4 +1,4 @@
-# Collaborative_Project_Management_Tool_for_Students
+# Collaborative Project Management Tool for Students
 
 ## Real-Time Collaborative Academic Project Management Platform
 
