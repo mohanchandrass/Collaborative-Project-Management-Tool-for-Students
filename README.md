@@ -1,23 +1,25 @@
+# Collaborative_Project_Management_Tool_for_Students
+
+## Real-Time Collaborative Academic Project Management Platform
+
 ```{=html}
 <p align="left">
 ```
-`<img src="https://img.shields.io/badge/Domain-Collaborative%20Productivity-orange?style=flat-square" alt="Domain">`{=html}
-`<img src="https://img.shields.io/badge/Frontend-React%20%7C%20Redux%20%7C%20MaterialUI-blue?style=flat-square" alt="Frontend">`{=html}
-`<img src="https://img.shields.io/badge/Backend-Firebase-yellow?style=flat-square" alt="Backend">`{=html}
-`<img src="https://img.shields.io/badge/Realtime-Firestore%20%7C%20Realtime%20DB-green?style=flat-square" alt="Realtime">`{=html}
+`<img src="https://img.shields.io/badge/Domain-Student%20Collaboration-orange?style=flat-square" alt="Domain">`{=html}
+`<img src="https://img.shields.io/badge/Architecture-Web%20Based-blue?style=flat-square" alt="Architecture">`{=html}
+`<img src="https://img.shields.io/badge/Realtime-Firebase-green?style=flat-square" alt="Realtime">`{=html}
 `<img src="https://img.shields.io/badge/Deployment-Firebase%20Hosting-lightgrey?style=flat-square" alt="Deployment">`{=html}
 ```{=html}
 </p>
 ```
-# Collaborative Project Management Tool for Students
+*A centralized platform designed to streamline academic teamwork through
+structured task management, real-time communication, and project
+analytics.*
 
-A centralized web-based platform designed to help student teams
-efficiently collaborate, manage projects, track tasks, and communicate
-in real time. The system reduces workflow fragmentation by combining
-project oversight, messaging, notifications, and analytics into a single
-interface.
+------------------------------------------------------------------------
 
-Repository:
+## Repository
+
 https://github.com/mohanchandrass/Collaborative-Project-Management-Tool-for-Students
 
 ------------------------------------------------------------------------
@@ -34,17 +36,17 @@ https://github.com/mohanchandrass/Collaborative-Project-Management-Tool-for-Stud
 
 ## Overview
 
-Academic projects often suffer from poor coordination, scattered
-communication channels, and limited visibility into task progress. This
-tool addresses those issues by providing a structured collaboration
-environment tailored specifically for student workflows.
+Academic teams frequently struggle with fragmented communication,
+unclear task ownership, and limited progress visibility. This platform
+consolidates project operations into a single environment, enabling
+structured collaboration and improving execution efficiency.
 
-The platform emphasizes:
+The system focuses on:
 
--   Clear task ownership\
--   Real-time communication\
--   Progress transparency\
--   Lightweight project governance
+-   Transparent task tracking\
+-   Integrated communication\
+-   Real-time updates\
+-   Simplified project governance
 
 ------------------------------------------------------------------------
 
@@ -52,33 +54,30 @@ The platform emphasizes:
 
 ### Task Management
 
-Create, assign, prioritize, and monitor tasks across projects. Track
-completion status and maintain accountability within teams.
+Create, assign, and monitor tasks with defined ownership and deadlines
+to maintain accountability across teams.
 
 ### Project Dashboard
 
-Gain a high-level view of ongoing projects including deadlines, task
-distribution, and current progress.
+Access a consolidated view of project status, timelines, and workload
+distribution.
 
 ### Real-Time Group Chat
 
-Enable fast team communication without relying on external messaging
-platforms. Users can create groups, join discussions, and leave
-conversations when necessary.
+Facilitate seamless team communication without external messaging tools.
 
-### Notifications System
+### Notifications
 
-Receive timely alerts for task updates, approaching deadlines, and
-project activity.
+Receive alerts for deadlines, task modifications, and project activity.
 
 ### Project Analytics
 
-Visual indicators and charts help teams quickly evaluate project health
-and identify bottlenecks.
+Leverage visual indicators to evaluate progress and quickly identify
+blockers.
 
 ------------------------------------------------------------------------
 
-## System Architecture
+## Technology Stack
 
 **Frontend** - React\
 - Redux\
@@ -91,7 +90,7 @@ and identify bottlenecks.
 
 **Hosting** - Firebase Hosting
 
-**Version Control** - Git and GitHub
+**Version Control** - GitHub
 
 ------------------------------------------------------------------------
 
@@ -102,16 +101,12 @@ and identify bottlenecks.
 -   Node.js (v14 or higher)\
 -   npm or yarn
 
-------------------------------------------------------------------------
-
 ### Clone the Repository
 
 ``` bash
 git clone https://github.com/mohanchandrass/Collaborative-Project-Management-Tool-for-Students.git
 cd Collaborative-Project-Management-Tool-for-Students
 ```
-
-------------------------------------------------------------------------
 
 ### Install Dependencies
 
@@ -125,28 +120,17 @@ or
 yarn install
 ```
 
-------------------------------------------------------------------------
-
 ### Firebase Setup
 
-1.  Create a project in the Firebase Console.\
+1.  Create a Firebase project.\
 2.  Enable Email/Password authentication.\
-3.  Configure Firestore Database.\
-4.  Obtain your Firebase configuration object.\
-5.  Add the configuration to the application.
-
-------------------------------------------------------------------------
+3.  Configure Firestore.\
+4.  Add the Firebase configuration to the application.
 
 ### Run Locally
 
 ``` bash
 npm start
-```
-
-or
-
-``` bash
-yarn start
 ```
 
 Application runs at:
@@ -158,65 +142,43 @@ Application runs at:
 ## Typical Workflow
 
 1.  Create a project.\
-2.  Invite or add team members.\
-3.  Break the project into actionable tasks.\
-4.  Assign ownership and deadlines.\
-5.  Communicate through group chat.\
-6.  Monitor progress via dashboard analytics.
+2.  Add team members.\
+3.  Break work into tasks.\
+4.  Assign responsibilities.\
+5.  Communicate via group chat.\
+6.  Track progress from the dashboard.
 
 ------------------------------------------------------------------------
 
 ## Contributing
 
-Contributions are welcome.
-
-**Process:**
-
 1.  Fork the repository\
-
-2.  Create a feature branch
-
-    ``` bash
-    git checkout -b feature-name
-    ```
-
-3.  Commit changes
-
-    ``` bash
-    git commit -m "Add feature"
-    ```
-
-4.  Push to your branch
-
-    ``` bash
-    git push origin feature-name
-    ```
-
+2.  Create a feature branch\
+3.  Commit your changes\
+4.  Push to your branch\
 5.  Open a Pull Request
 
 ------------------------------------------------------------------------
 
 ## Roadmap
 
--   Role-based access control (Admin, Member)\
--   Third-party integrations (Google Drive, productivity tools)\
--   Advanced analytics and reporting\
--   Mobile responsiveness improvements\
+-   Role-based access control\
+-   Third-party integrations\
+-   Advanced analytics\
+-   Improved mobile responsiveness\
 -   Offline capability exploration
 
 ------------------------------------------------------------------------
 
 ## License
 
-This project is licensed under the MIT License. Refer to the LICENSE
-file for details.
+MIT License. Refer to the LICENSE file for details.
 
 ------------------------------------------------------------------------
 
 ## Contact
 
-**GitHub:**\
+GitHub:\
 https://github.com/mohanchandrass
 
-For questions, issues, or collaboration inquiries, open an issue in the
-repository.
+For issues or collaboration inquiries, open a repository issue.
