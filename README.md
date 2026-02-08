@@ -23,10 +23,10 @@ https://github.com/mohanchandrass/Collaborative-Project-Management-Tool-for-Stud
 
 ## Team Members
 
--   Mohan Chandra S S\
--   Prabhat M\
--   Likith S G\
--   Nithin S\
+-   Mohan Chandra S S
+-   Prabhat M
+-   Likith S G
+-   Nithin S
 -   Karthik S M
 
 ------------------------------------------------------------------------
@@ -40,9 +40,9 @@ structured collaboration and improving execution efficiency.
 
 The system focuses on:
 
--   Transparent task tracking\
--   Integrated communication\
--   Real-time updates\
+-   Transparent task tracking
+-   Integrated communication
+-   Real-time updates
 -   Simplified project governance
 
 ------------------------------------------------------------------------
@@ -76,11 +76,11 @@ blockers.
 
 ## Technology Stack
 
-**Frontend** - React\
-- Redux\
+**Frontend** - React
+- Redux
 - Material UI
 
-**Backend** - Firebase Firestore\
+**Backend** - Firebase Firestore
 - Firebase Authentication
 
 **Real-Time Infrastructure** - Firebase Realtime Database
@@ -95,7 +95,7 @@ blockers.
 
 ### Prerequisites
 
--   Node.js (v14 or higher)\
+-   Node.js (v14 or higher)
 -   npm or yarn
 
 ### Clone the Repository
@@ -119,9 +119,9 @@ yarn install
 
 ### Firebase Setup
 
-1.  Create a Firebase project.\
-2.  Enable Email/Password authentication.\
-3.  Configure Firestore.\
+1.  Create a Firebase project.
+2.  Enable Email/Password authentication.
+3.  Configure Firestore.
 4.  Add the Firebase configuration to the application.
 
 ### Run Locally
@@ -138,31 +138,31 @@ Application runs at:
 
 ## Typical Workflow
 
-1.  Create a project.\
-2.  Add team members.\
-3.  Break work into tasks.\
-4.  Assign responsibilities.\
-5.  Communicate via group chat.\
+1.  Create a project.
+2.  Add team members.
+3.  Break work into tasks.
+4.  Assign responsibilities.
+5.  Communicate via group chat.
 6.  Track progress from the dashboard.
 
 ------------------------------------------------------------------------
 
 ## Contributing
 
-1.  Fork the repository\
-2.  Create a feature branch\
-3.  Commit your changes\
-4.  Push to your branch\
+1.  Fork the repository
+2.  Create a feature branch
+3.  Commit your changes
+4.  Push to your branch
 5.  Open a Pull Request
 
 ------------------------------------------------------------------------
 
 ## Roadmap
 
--   Role-based access control\
--   Third-party integrations\
--   Advanced analytics\
--   Improved mobile responsiveness\
+-   Role-based access control
+-   Third-party integrations
+-   Advanced analytics
+-   Improved mobile responsiveness
 -   Offline capability exploration
 
 ------------------------------------------------------------------------
@@ -175,7 +175,6 @@ MIT License. Refer to the LICENSE file for details.
 
 ## Contact
 
-GitHub:\
-https://github.com/mohanchandrass
+GitHub: https://github.com/mohanchandrass
 
 For issues or collaboration inquiries, open a repository issue.
