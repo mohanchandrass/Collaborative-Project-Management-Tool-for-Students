@@ -79,9 +79,10 @@ function App() {
             <TaskProvider>
               <PageWrapper>
                 <Routes>
+                  <Route path="/" element={<Home />} /> 
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
-                  <Route path="/home" element={<Home />} /> {/* Set /home as a direct route */}
+                  
 
                   <Route
                     path="/"
@@ -91,7 +92,7 @@ function App() {
                       </ProtectedRoute>
                     }
                   >
-                    <Route index element={<Navigate to="/home" replace />} /> {/* Redirect root to /home */}
+                    <Route index element={<Navigate to="/" replace />} /> {/* Redirect root to /home */}
                     <Route path="projects" element={<ProjectDashboard />} />
                     <Route path="projects/:projectId" element={<ProjectDashboard />} />
                     <Route path="userprofile" element={<UserProfile />} />
