@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import { AuthProvider } from './context/AuthContext'; // <-- adjust path if needed
+import { AuthProvider } from './context/AuthContext';
 
 const Main = () => {
-  useEffect(() => {
-
   return <App />;
 };
 
