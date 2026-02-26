@@ -43,19 +43,19 @@ https://github.com/mohanchandrass/Collaborative-Project-Management-Tool-for-Stud
 
 ### Key Screens
 
-#### Home Page
+#### ProjectHub/Teamly an APP for Project Management
 <p align="center">
   <img src="demo/home.png" alt="Home Page" width="800">
 </p>
 
-#### Chat Interface
-<p align="center">
-  <img src="demo/chat.png" alt="Chat Interface" width="800">
-</p>
-
-#### Dashboard View
+#### Dashboard with Quick Access
 <p align="center">
   <img src="demo/dashboard.png" alt="Dashboard View" width="800">
+</p>
+
+#### Chat with Your Friends/Teammates
+<p align="center">
+  <img src="demo/chat.png" alt="Chat Interface" width="800">
 </p>
 
 ------------------------------------------------------------------------
