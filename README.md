@@ -36,7 +36,7 @@ https://github.com/mohanchandrass/Collaborative-Project-Management-Tool-for-Stud
 ### Application Walkthrough
 
 <p align="center">
-  <img src="demo/demo.gif" alt="Application Demo" width="800">
+  <img src="demo/demo-sped.gif" alt="Application Demo" width="800">
 </p>
 
 ### Key Screens
