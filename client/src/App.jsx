@@ -92,7 +92,7 @@ function App() {
                       </ProtectedRoute>
                     }
                   >
-                    <Route index element={<Navigate to="/" replace />} /> {/* Redirect root to /home */}
+                    
                     <Route path="projects" element={<ProjectDashboard />} />
                     <Route path="projects/:projectId" element={<ProjectDashboard />} />
                     <Route path="userprofile" element={<UserProfile />} />
@@ -108,8 +108,9 @@ function App() {
                     <Route path="/Calculator" element={<Calculator />} />
                     <Route path="/Dictionary" element={<Dictionary />} />
                     <Route path="/report-generator" element={<ReportGenerator />} />
-                    <Route path="*" element={<Navigate to="/" replace />} />
+                   
                   </Route>
+                 <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </PageWrapper>
             </TaskProvider>
