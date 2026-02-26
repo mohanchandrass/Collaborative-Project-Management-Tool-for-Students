@@ -5,11 +5,6 @@ import { AuthProvider } from './context/AuthContext'; // <-- adjust path if need
 
 const Main = () => {
   useEffect(() => {
-    // Check if the user is at the root route and redirect them to /home
-    if (window.location.pathname === '/') {
-      window.location.replace('/home');
-    }
-  }, []);
 
   return <App />;
 };
