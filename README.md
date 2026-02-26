@@ -31,6 +31,35 @@ https://github.com/mohanchandrass/Collaborative-Project-Management-Tool-for-Stud
 
 ------------------------------------------------------------------------
 
+------------------------------------------------------------------------
+
+## Application Demo
+
+### Full Application Walkthrough
+
+<p align="center">
+  <img src="demo/demo.gif" alt="Application Demo" width="800">
+</p>
+
+### Key Screens
+
+#### Home Page
+<p align="center">
+  <img src="demo/home.png" alt="Home Page" width="800">
+</p>
+
+#### Chat Interface
+<p align="center">
+  <img src="demo/chat.png" alt="Chat Interface" width="800">
+</p>
+
+#### Dashboard View
+<p align="center">
+  <img src="demo/dashboard.png" alt="Dashboard View" width="800">
+</p>
+
+------------------------------------------------------------------------
+
 ## Overview
 
 Academic teams frequently struggle with fragmented communication,
