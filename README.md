@@ -15,19 +15,11 @@ analytics.*
 
 ------------------------------------------------------------------------
 
-## Repository
-
-https://github.com/mohanchandrass/Collaborative-Project-Management-Tool-for-Students
-
-------------------------------------------------------------------------
-
 ## Team Members
 
--   Mohan Chandra S S
--   Prabhat M
--   Likith S G
--   Nithin S
--   Karthik S M
+-   Ramesh Rathod
+-   Niraj Damai N
+-   Dhanush J
 
 ------------------------------------------------------------------------
 
@@ -125,12 +117,7 @@ blockers.
 -   Node.js (v14 or higher)
 -   npm or yarn
 
-### Clone the Repository
 
-``` bash
-git clone https://github.com/mohanchandrass/Collaborative-Project-Management-Tool-for-Students.git
-cd Collaborative-Project-Management-Tool-for-Students
-```
 
 ### Install Dependencies
 
@@ -172,36 +159,5 @@ Application runs at:
 5.  Communicate via group chat.
 6.  Track progress from the dashboard.
 
-------------------------------------------------------------------------
 
-## Contributing
 
-1.  Fork the repository
-2.  Create a feature branch
-3.  Commit your changes
-4.  Push to your branch
-5.  Open a Pull Request
-
-------------------------------------------------------------------------
-
-## Roadmap
-
--   Role-based access control
--   Third-party integrations
--   Advanced analytics
--   Improved mobile responsiveness
--   Offline capability exploration
-
-------------------------------------------------------------------------
-
-## License
-
-MIT License. Refer to the LICENSE file for details.
-
-------------------------------------------------------------------------
-
-## Contact
-
-GitHub: https://github.com/mohanchandrass
-
-For issues or collaboration inquiries, open a repository issue.
