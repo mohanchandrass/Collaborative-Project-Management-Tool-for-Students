@@ -204,4 +204,4 @@ MIT License. Refer to the LICENSE file for details.
 
 GitHub: https://github.com/mohanchandrass
 
-For issues or collaboration inquiries, open a repository issue.
+For issues or collaboration inquiries open a repository issue.
