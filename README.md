@@ -158,6 +158,3 @@ Application runs at:
 4.  Assign responsibilities.
 5.  Communicate via group chat.
 6.  Track progress from the dashboard.
-
-
-
