@@ -11,7 +11,7 @@
 
 *A centralized platform designed to streamline academic teamwork through
 structured task management, real-time communication, and project
-analytics.*
+analytics*
 
 ------------------------------------------------------------------------
 
