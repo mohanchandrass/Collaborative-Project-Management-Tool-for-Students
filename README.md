@@ -196,7 +196,7 @@ Application runs at:
 
 ## License
 
-MIT License. Refer to the LICENSE file for details.
+MIT License Refer to the LICENSE file for details.
 
 ------------------------------------------------------------------------
 
